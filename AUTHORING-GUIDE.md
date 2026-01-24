@@ -7,6 +7,7 @@ Write in Word → Export as **PDF** → upload to GitHub.
 ### Education PDFs
 - Pre-K: `assets/docs/education/prek/`
 - Grade 1: `assets/docs/education/grade1/`
+- Grade 2: `assets/docs/education/grade2/`
 
 ### Blog PDFs
 - `assets/docs/blog/`
