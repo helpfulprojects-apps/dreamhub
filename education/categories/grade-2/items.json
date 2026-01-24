@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "id": "math-word-problems",
+      "title": "Math Word Problems",
+      "summary": "Beginner word problems (sample).",
+      "tag": "Worksheet",
+      "icon": "\u2795",
+      "meta": "Sample"
+    }
+  ]
+}

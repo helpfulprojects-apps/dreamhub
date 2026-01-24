@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "id": "kannada-basics",
+      "title": "Kannada Basics",
+      "summary": "Simple Kannada learning content (sample).",
+      "tag": "Lesson",
+      "icon": "\u0c95",
+      "meta": "Sample"
+    }
+  ]
+}

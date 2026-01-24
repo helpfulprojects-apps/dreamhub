@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "id": "spot-the-difference",
+      "title": "Spot the Difference",
+      "summary": "A simple brain game idea (sample).",
+      "tag": "Game",
+      "icon": "\ud83e\udde9",
+      "meta": "Sample"
+    }
+  ]
+}

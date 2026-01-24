@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Post • DreamHub</title>
+  <link rel="stylesheet" href="/dreamhub/assets/css/style.css" />
+  <script src="/dreamhub/assets/js/content.js"></script>
+<script src="/dreamhub/assets/js/markdown.js"></script>
+  <script src="/dreamhub/assets/js/config.js"></script>
+</head>
+<body>
+  <div id="dh-header"></div>
+  <main class="container">
+  
+<div class="breadcrumbs"><a href="/dreamhub/">Home</a> / <a href="/dreamhub/blog.html">Blog</a> / <span id="crumb-item">Post</span></div>
+<section class="hero"><h1 id="page-title">Post</h1><p id="page-subtitle">Clean reading layout.</p></section>
+
+<div class="viewer">
+  <div class="panel">
+    <div class="panel-head"><strong>Post</strong><span class="muted small">Markdown</span></div>
+    <div class="panel-body md" id="md-body"></div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><strong>Attachment (optional)</strong><a id="pdf-download" class="btn" href="#" download>Download</a></div>
+    <iframe class="pdf" id="pdf-frame" title="PDF preview"></iframe>
+  </div>
+</div>
+
+<script>
+function getParam(name){ return (new URL(window.location.href)).searchParams.get(name) || ""; }
+document.addEventListener("DOMContentLoaded", async () => {
+  const id = getParam("id");
+  if(!id){ document.getElementById("md-body").innerHTML = "<div class='notice'>Missing post id.</div>"; return; }
+  const items = await DH_CONTENT.loadJSON("blog/items.json");
+  const item = (items.items || []).find(x => x.id === id);
+  if(!item){ document.getElementById("md-body").innerHTML = "<div class='notice'>Post not found.</div>"; return; }
+  document.getElementById("crumb-item").textContent = item.title;
+  document.getElementById("page-title").textContent = item.title;
+  document.getElementById("page-subtitle").textContent = item.summary || "";
+  DH_CONTENT.renderMarkdownViewer({
+    mdPath: `blog/content/${id}.md`,
+    pdfPath: `blog/content/${id}.pdf`,
+    titleId: "page-title",
+    bodyId: "md-body",
+    pdfId: "pdf-frame",
+    pdfDownloadId: "pdf-download"
+  });
+});
+</script>
+
+  </main>
+  <div id="dh-footer"></div>
+  <script src="/dreamhub/assets/js/layout.js"></script>
+</body>
+</html>

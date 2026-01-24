@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "id": "welcome-recipe",
+      "title": "Welcome Recipe",
+      "summary": "Sample recipe post using Markdown + (optional) PDF.",
+      "tag": "Recipe",
+      "icon": "\ud83c\udf72",
+      "meta": "Sample"
+    }
+  ]
+}

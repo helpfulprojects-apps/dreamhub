@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Worksheet • DreamHub</title>
+  <link rel="stylesheet" href="/dreamhub/assets/css/style.css" />
+  <script src="/dreamhub/assets/js/content.js"></script>
+<script src="/dreamhub/assets/js/markdown.js"></script>
+  <script src="/dreamhub/assets/js/config.js"></script>
+</head>
+<body>
+  <div id="dh-header"></div>
+  <main class="container">
+  
+<div class="breadcrumbs">
+  <a href="/dreamhub/">Home</a> /
+  <a href="/dreamhub/education.html">Education</a> /
+  <a href="/dreamhub/education/grades.html">Grades</a> /
+  <a id="crumb-category" href="#">Category</a> /
+  <span id="crumb-item">Item</span>
+</div>
+
+<section class="hero">
+  <h1 id="page-title">Worksheet</h1>
+  <p id="page-subtitle">Reading view + PDF preview.</p>
+</section>
+
+<div class="viewer">
+  <div class="panel">
+    <div class="panel-head"><strong>Overview</strong><span class="muted small">Markdown</span></div>
+    <div class="panel-body md" id="md-body"></div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><strong>Worksheet PDF</strong><a id="pdf-download" class="btn" href="#" download>Download</a></div>
+    <iframe class="pdf" id="pdf-frame" title="PDF preview"></iframe>
+  </div>
+</div>
+
+<script>
+function getParam(name){
+  const u = new URL(window.location.href);
+  return u.searchParams.get(name) || "";
+}
+document.addEventListener("DOMContentLoaded", async () => {
+  const c = getParam("c");
+  const id = getParam("id");
+  if(!c || !id){
+    document.getElementById("md-body").innerHTML = "<div class='notice'>Missing category or item.</div>";
+    return;
+  }
+  const meta = await DH_CONTENT.loadJSON(`education/categories/${c}/meta.json`);
+  const items = await DH_CONTENT.loadJSON(`education/categories/${c}/items.json`);
+  const item = (items.items || []).find(x => x.id === id);
+
+  document.getElementById("crumb-category").textContent = meta.shortTitle || meta.title || c;
+  document.getElementById("crumb-category").setAttribute("href", `/dreamhub/education/category.html?c=${encodeURIComponent(c)}`);
+  document.getElementById("crumb-item").textContent = item ? item.title : id;
+
+  if(!item){
+    document.getElementById("md-body").innerHTML = "<div class='notice'>Item not found.</div>";
+    return;
+  }
+
+  document.getElementById("page-title").textContent = item.title || "Worksheet";
+  document.getElementById("page-subtitle").textContent = item.summary || "";
+
+  const mdPath = `education/categories/${c}/content/${id}.md`;
+  const pdfPath = `education/categories/${c}/content/${id}.pdf`;
+
+  DH_CONTENT.renderMarkdownViewer({
+    mdPath,
+    pdfPath,
+    titleId: "page-title",
+    bodyId: "md-body",
+    pdfId: "pdf-frame",
+    pdfDownloadId: "pdf-download"
+  });
+});
+</script>
+
+  </main>
+  <div id="dh-footer"></div>
+  <script src="/dreamhub/assets/js/layout.js"></script>
+</body>
+</html>

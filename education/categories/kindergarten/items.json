@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "id": "letter-tracing",
+      "title": "Letter Tracing Practice",
+      "summary": "A clean sample item for Kindergarten.",
+      "tag": "Worksheet",
+      "icon": "\ud83d\udd24",
+      "meta": "Sample"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recipe • DreamHub</title>
+  <link rel="stylesheet" href="/dreamhub/assets/css/style.css" />
+  <script src="/dreamhub/assets/js/content.js"></script>
+<script src="/dreamhub/assets/js/markdown.js"></script>
+  <script src="/dreamhub/assets/js/config.js"></script>
+</head>
+<body>
+  <div id="dh-header"></div>
+  <main class="container">
+  
+<div class="breadcrumbs"><a href="/dreamhub/">Home</a> / <a href="/dreamhub/recipes.html">Kitchen Recipes</a> / <span id="crumb-item">Recipe</span></div>
+<section class="hero"><h1 id="page-title">Recipe</h1><p id="page-subtitle">Clean reading layout for cooking.</p></section>
+
+<div class="viewer">
+  <div class="panel">
+    <div class="panel-head"><strong>Recipe</strong><span class="muted small">Markdown</span></div>
+    <div class="panel-body md" id="md-body"></div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><strong>Attachment (optional)</strong><a id="pdf-download" class="btn" href="#" download>Download</a></div>
+    <iframe class="pdf" id="pdf-frame" title="PDF preview"></iframe>
+  </div>
+</div>
+
+<script>
+function getParam(name){ return (new URL(window.location.href)).searchParams.get(name) || ""; }
+document.addEventListener("DOMContentLoaded", async () => {
+  const id = getParam("id");
+  if(!id){ document.getElementById("md-body").innerHTML = "<div class='notice'>Missing recipe id.</div>"; return; }
+  const items = await DH_CONTENT.loadJSON("recipes/items.json");
+  const item = (items.items || []).find(x => x.id === id);
+  if(!item){ document.getElementById("md-body").innerHTML = "<div class='notice'>Recipe not found.</div>"; return; }
+  document.getElementById("crumb-item").textContent = item.title;
+  document.getElementById("page-title").textContent = item.title;
+  document.getElementById("page-subtitle").textContent = item.summary || "";
+  DH_CONTENT.renderMarkdownViewer({
+    mdPath: `recipes/content/${id}.md`,
+    pdfPath: `recipes/content/${id}.pdf`,
+    titleId: "page-title",
+    bodyId: "md-body",
+    pdfId: "pdf-frame",
+    pdfDownloadId: "pdf-download"
+  });
+});
+</script>
+
+  </main>
+  <div id="dh-footer"></div>
+  <script src="/dreamhub/assets/js/layout.js"></script>
+</body>
+</html>

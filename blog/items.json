@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "id": "welcome",
+      "title": "Welcome Post",
+      "summary": "A simple sample blog post using Markdown + (optional) PDF.",
+      "tag": "Post",
+      "icon": "\ud83d\udcdd",
+      "meta": "Sample"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog • DreamHub</title>
+  <link rel="stylesheet" href="/dreamhub/assets/css/style.css" />
+  <script src="/dreamhub/assets/js/content.js"></script>
+<script src="/dreamhub/assets/js/markdown.js"></script>
+  <script src="/dreamhub/assets/js/config.js"></script>
+</head>
+<body>
+  <div id="dh-header"></div>
+  <main class="container">
+  
+<div class="breadcrumbs"><a href="/dreamhub/">Home</a> / Blog</div>
+<section class="hero">
+  <h1>Blog</h1>
+  <p>Standard, clean blog style. Add posts as Markdown (PDF optional).</p>
+</section>
+<div id="blog-list"></div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  DH_CONTENT.renderList({
+    containerId: "blog-list",
+    jsonPath: "blog/items.json",
+    itemLinkBuilder: (it) => `/dreamhub/blog/post.html?id=${encodeURIComponent(it.id)}`
+  });
+});
+</script>
+
+  </main>
+  <div id="dh-footer"></div>
+  <script src="/dreamhub/assets/js/layout.js"></script>
+</body>
+</html>

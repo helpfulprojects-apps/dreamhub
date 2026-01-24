@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "id": "reading-practice",
+      "title": "Reading Practice Set",
+      "summary": "Short passages and questions (sample).",
+      "tag": "Worksheet",
+      "icon": "\ud83d\udcd6",
+      "meta": "Sample"
+    }
+  ]
+}

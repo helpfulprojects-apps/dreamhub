@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kitchen Recipes • DreamHub</title>
+  <link rel="stylesheet" href="/dreamhub/assets/css/style.css" />
+  <script src="/dreamhub/assets/js/content.js"></script>
+<script src="/dreamhub/assets/js/markdown.js"></script>
+  <script src="/dreamhub/assets/js/config.js"></script>
+</head>
+<body>
+  <div id="dh-header"></div>
+  <main class="container">
+  
+<div class="breadcrumbs"><a href="/dreamhub/">Home</a> / Kitchen Recipes</div>
+<section class="hero">
+  <h1>Kitchen Recipes</h1>
+  <p>Recipes with a clean reading layout. Add recipes as Markdown (PDF optional).</p>
+</section>
+<div id="recipes-list"></div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  DH_CONTENT.renderList({
+    containerId: "recipes-list",
+    jsonPath: "recipes/items.json",
+    itemLinkBuilder: (it) => `/dreamhub/recipes/recipe.html?id=${encodeURIComponent(it.id)}`
+  });
+});
+</script>
+
+  </main>
+  <div id="dh-footer"></div>
+  <script src="/dreamhub/assets/js/layout.js"></script>
+</body>
+</html>

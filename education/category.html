@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Category • DreamHub</title>
+  <link rel="stylesheet" href="/dreamhub/assets/css/style.css" />
+  <script src="/dreamhub/assets/js/content.js"></script>
+<script src="/dreamhub/assets/js/markdown.js"></script>
+  <script src="/dreamhub/assets/js/config.js"></script>
+</head>
+<body>
+  <div id="dh-header"></div>
+  <main class="container">
+  
+<div class="breadcrumbs">
+  <a href="/dreamhub/">Home</a> /
+  <a href="/dreamhub/education.html">Education</a> /
+  <a href="/dreamhub/education/grades.html">Grades</a> /
+  <span id="cat-name">Category</span>
+</div>
+
+<section class="hero">
+  <h1 id="cat-title">Category</h1>
+  <p id="cat-desc">Worksheets and activities.</p>
+</section>
+
+<div id="category-list"></div>
+
+<script>
+function getParam(name){
+  const u = new URL(window.location.href);
+  return u.searchParams.get(name) || "";
+}
+document.addEventListener("DOMContentLoaded", async () => {
+  const c = getParam("c");
+  if(!c){ document.getElementById("category-list").innerHTML = "<div class='notice'>Missing category.</div>"; return; }
+  const meta = await DH_CONTENT.loadJSON(`education/categories/${c}/meta.json`);
+  document.getElementById("cat-name").textContent = meta.shortTitle || meta.title || c;
+  document.getElementById("cat-title").textContent = meta.title || c;
+  document.getElementById("cat-desc").textContent = meta.description || "";
+  DH_CONTENT.renderList({
+    containerId: "category-list",
+    jsonPath: `education/categories/${c}/items.json`,
+    itemLinkBuilder: (it) => `/dreamhub/education/item.html?c=${encodeURIComponent(c)}&id=${encodeURIComponent(it.id)}`
+  });
+});
+</script>
+
+  </main>
+  <div id="dh-footer"></div>
+  <script src="/dreamhub/assets/js/layout.js"></script>
+</body>
+</html>
