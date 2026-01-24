@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Grade 1 - DreamHub</title>
+
+<script src="" id="dhBaseScript"></script>
+<link rel="stylesheet" href="" id="dhCss">
+<script>
+  (function(){
+    var parts = window.location.pathname.split('/').filter(Boolean);
+    var base = (window.location.hostname.endsWith('github.io') && parts.length>=1) ? '/' + parts[0] + '/' : '/';
+    document.getElementById('dhCss').href = base + 'assets/css/site.css';
+    document.getElementById('dhBaseScript').src = base + 'assets/js/base.js';
+  })();
+</script>
+
+</head>
+<body>
+<main class="container">
+
+<section class="hero">
+  <h1 id="catTitle">Category</h1>
+  <p id="catSubtitle">Worksheets and activities.</p>
+</section>
+
+<section class="grid cards" id="postGrid" aria-live="polite"></section>
+
+</main>
+
+<script>
+  (function loadAfterBase(){
+    function join(base, rel){ return (base.endsWith('/')?base:base+'/') + rel; }
+    function loadScript(src){ return new Promise(function(res,rej){ var s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
+    var parts = window.location.pathname.split('/').filter(Boolean);
+    var base = (window.location.hostname.endsWith('github.io') && parts.length>=1) ? '/' + parts[0] + '/' : '/';
+    Promise.resolve()
+      .then(function(){ return loadScript(join(base,'assets/js/layout.js')); })
+      .then(function(){ return loadScript(join(base,'assets/js/markdown.js')); })
+      .then(function(){ if(window.DH && window.DH.renderLayout) window.DH.renderLayout(); })
+      .then(function(){ 
+var parts = window.location.pathname.split('/').filter(Boolean);
+var idx = parts.indexOf('categories');
+var slug = (idx>=0 && parts.length>idx+1) ? parts[idx+1] : '';
+var titleEl = document.getElementById('catTitle');
+var subEl = document.getElementById('catSubtitle');
+var grid = document.getElementById('postGrid');
+
+function fmtDate(s){ try{ return new Date(s).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}catch(e){return s;} }
+
+Promise.all([
+  fetch(window.DH.base + 'education/categories.json').then(r=>r.json()),
+  fetch(window.DH.base + 'education/categories/' + slug + '/posts/index.json').then(r=>r.json())
+]).then(function(all){
+  var cats = all[0], posts = all[1];
+  var cat = cats.find(c=>c.slug===slug);
+  if(cat){ titleEl.textContent = cat.title; subEl.textContent = cat.subtitle || ''; }
+
+  grid.innerHTML = posts.map(function(p){
+    return `
+      <div class="card">
+        <h3>${p.title}</h3>
+        <p>${p.summary || ''}</p>
+        <div class="meta">
+          <span>📅 ${fmtDate(p.date)}</span>
+          ${p.tags ? `<span>🏷️ ${p.tags.join(', ')}</span>` : ''}
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="${window.DH.base}education/post/?c=${encodeURIComponent(slug)}&p=${encodeURIComponent(p.slug)}">Open</a>
+          <a class="btn" href="${window.DH.base}education/categories/${slug}/${p.pdf}" target="_blank" rel="noopener">Open PDF</a>
+        </div>
+      </div>
+    `;
+  }).join('');
+}).catch(function(err){
+  console.error(err);
+  grid.innerHTML = '<div class="card"><h3>No posts yet</h3><p>Add posts/index.json and .md + pdf files.</p></div>';
+});
+ })
+      .catch(function(e){ console.error(e); });
+  })();
+</script>
+
+</body>
+</html>

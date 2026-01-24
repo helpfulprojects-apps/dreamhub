@@ -1,0 +1,85 @@
+[
+  {
+    "slug": "pre-k",
+    "title": "Pre-K",
+    "subtitle": "Shapes \u2022 Colors \u2022 Tracing",
+    "href": "education/categories/pre-k/",
+    "badges": [
+      "Early Learning",
+      "Worksheets"
+    ]
+  },
+  {
+    "slug": "kindergarten",
+    "title": "Kindergarten",
+    "subtitle": "Letters \u2022 Numbers \u2022 Basics",
+    "href": "education/categories/kindergarten/",
+    "badges": [
+      "Foundations",
+      "Worksheets"
+    ]
+  },
+  {
+    "slug": "grade-1",
+    "title": "Grade 1",
+    "subtitle": "Reading \u2022 Math \u2022 Practice",
+    "href": "education/categories/grade-1/",
+    "badges": [
+      "Worksheets"
+    ]
+  },
+  {
+    "slug": "grade-2",
+    "title": "Grade 2",
+    "subtitle": "Worksheets \u2022 Word Problems",
+    "href": "education/categories/grade-2/",
+    "badges": [
+      "Worksheets"
+    ]
+  },
+  {
+    "slug": "grade-3",
+    "title": "Grade 3",
+    "subtitle": "Skills \u2022 Activities",
+    "href": "education/categories/grade-3/",
+    "badges": [
+      "Worksheets"
+    ]
+  },
+  {
+    "slug": "grade-4",
+    "title": "Grade 4",
+    "subtitle": "Practice \u2022 Challenges",
+    "href": "education/categories/grade-4/",
+    "badges": [
+      "Worksheets"
+    ]
+  },
+  {
+    "slug": "grade-5",
+    "title": "Grade 5",
+    "subtitle": "Advanced \u2022 Prep",
+    "href": "education/categories/grade-5/",
+    "badges": [
+      "Worksheets"
+    ]
+  },
+  {
+    "slug": "kannada",
+    "title": "Kannada",
+    "subtitle": "Kannada learning resources",
+    "href": "education/categories/kannada/",
+    "badges": [
+      "Language"
+    ]
+  },
+  {
+    "slug": "brain-games",
+    "title": "Brain Games",
+    "subtitle": "Fun brain games & puzzles",
+    "href": "education/categories/brain-games/",
+    "badges": [
+      "Games"
+    ]
+  }
+]

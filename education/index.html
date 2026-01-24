@@ -1,34 +1,65 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Education - DreamHub</title>
-<link rel="stylesheet" href="../assets/css/style.css">
-</head><body>
-<div class="topbar"><div class="container row">
-  <a class="brand" href="/dreamhub/"><div class="logo">🚀</div><div>DreamHub</div></a>
-  <nav class="nav">
-    <a href="/dreamhub/education/" data-nav="education">Education</a>
-    <a href="/dreamhub/apps/" data-nav="apps">Apps</a>
-    <a href="/dreamhub/blog/" data-nav="blog">Blog</a>
-    <a href="/dreamhub/about/" data-nav="about">About</a>
-    <a href="/dreamhub/contact/" data-nav="contact">Contact</a>
-  </nav>
-</div></div>
 
-<main class="container page">
-<div class="breadcrumb"><a href="/dreamhub/">Home</a> / Education</div>
+<script src="" id="dhBaseScript"></script>
+<link rel="stylesheet" href="" id="dhCss">
+<script>
+  (function(){
+    var parts = window.location.pathname.split('/').filter(Boolean);
+    var base = (window.location.hostname.endsWith('github.io') && parts.length>=1) ? '/' + parts[0] + '/' : '/';
+    document.getElementById('dhCss').href = base + 'assets/css/site.css';
+    document.getElementById('dhBaseScript').src = base + 'assets/js/base.js';
+  })();
+</script>
 
-<h1 class="h-title">Education</h1>
-<p class="sub">Browse learning resources by grade or by topic.</p>
-<div class="card-grid">
-  <div class="card"><div class="badge">Grades</div><h3>Grade-wise</h3><p class="sub">Pre‑K to Grade 5+</p><a class="btn" href="/dreamhub/education/grades/">Open</a></div>
-  <div class="card"><div class="badge">Topics</div><h3>Topic-wise</h3><p class="sub">Math, Reading, Kannada…</p><a class="btn" href="/dreamhub/education/topics/">Open</a></div>
-</div>
+</head>
+<body>
+<main class="container">
+
+<section class="hero">
+  <h1>Education</h1>
+  <p>Browse learning resources by grade or category.</p>
+</section>
+
+<section class="grid cards" id="catGrid" aria-live="polite"></section>
 
 </main>
-<footer class="footer"><div class="container">
-  <div>© 2026 DreamHub</div>
-  <div class="small">Built with GitHub Pages</div>
-</div></footer>
 
-<script src="../assets/js/nav.js"></script>
-</body></html>
+<script>
+  (function loadAfterBase(){
+    function join(base, rel){ return (base.endsWith('/')?base:base+'/') + rel; }
+    function loadScript(src){ return new Promise(function(res,rej){ var s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
+    var parts = window.location.pathname.split('/').filter(Boolean);
+    var base = (window.location.hostname.endsWith('github.io') && parts.length>=1) ? '/' + parts[0] + '/' : '/';
+    Promise.resolve()
+      .then(function(){ return loadScript(join(base,'assets/js/layout.js')); })
+      .then(function(){ return loadScript(join(base,'assets/js/markdown.js')); })
+      .then(function(){ if(window.DH && window.DH.renderLayout) window.DH.renderLayout(); })
+      .then(function(){ 
+var grid = document.getElementById('catGrid');
+fetch(window.DH.base + 'education/categories.json')
+  .then(r=>r.json())
+  .then(function(cats){
+    grid.innerHTML = cats.map(function(c){
+      return `
+        <div class="card">
+          <h3>${c.title}</h3>
+          <p>${c.subtitle || ''}</p>
+          <div class="actions"><a class="btn primary" href="${window.DH.base + c.href}">Open</a></div>
+          <div class="badges">${(c.badges||[]).map(b=>`<span class="badge">${b}</span>`).join('')}</div>
+        </div>
+      `;
+    }).join('');
+  })
+  .catch(function(){ grid.innerHTML = '<div class="card"><h3>Could not load categories</h3><p>Check categories.json</p></div>'; });
+ })
+      .catch(function(e){ console.error(e); });
+  })();
+</script>
+
+</body>
+</html>
