@@ -1,8 +1,14 @@
 
-DreamHub GitHub Pages site
+# DreamHub (GitHub Pages)
 
-Upload PDFs to:
-assets/docs/education/prek/
+This is a static site for GitHub Pages.
 
-Copy worksheet template:
-grades/prek/worksheets/sample.html
+## Key URLs
+- Home: /dreamhub/
+- Education: /dreamhub/education/
+- Grades: /dreamhub/education/grades/
+- Pre-K: /dreamhub/grades/prek/
+- Apps: /dreamhub/apps/
+- Blog: /dreamhub/blog/
+
+See AUTHORING-GUIDE.md for adding PDFs and pages.
