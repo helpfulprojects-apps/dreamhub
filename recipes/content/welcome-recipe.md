@@ -15,12 +15,9 @@ This is a **sample recipe**.
 
 *Golden crispy dosa served hot*
 
-
-<img src="images/Dosa.jpg" alt="Plain Dosa" class="dh-img dh-img-sm">
+![Plain Dosa](images/Dosa.jpg){sm}
 *Golden crispy dosa served hot*
-
-<img src="images/Dosa.jpg" alt="Plain Dosa" class="dh-img dh-img-md">
+![Plain Dosa](images/Dosa.jpg){md}
 *Golden crispy dosa served hot*
-
-<img src="images/Dosa.jpg" alt="Plain Dosa" class="dh-img dh-img-lg">
+![Plain Dosa](images/Dosa.jpg){lg}
 *Golden crispy dosa served hot*

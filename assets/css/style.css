@@ -182,27 +182,21 @@ body{
 
 /* ===== Markdown image safety & predictability ===== */
 
-/* Base responsive image for markdown output */
-.md-body img,
-.md-body .dh-img {
-  width: 100%;
-  max-width: 480px;      /* SAFE default size */
-  height: auto;
+/* Markdown images (safe + predictable across devices) */
+.md img.dh-img {
   display: block;
-  margin: 16px auto;
+  width: 100%;
+  height: auto;
+  max-width: min(680px, 100%);
+  margin: 12px auto;
   border-radius: 12px;
 }
 
 /* Optional size variants */
-.md-body .dh-img-sm { max-width: 360px; }
-.md-body .dh-img-md { max-width: 480px; } /* default */
-.md-body .dh-img-lg { max-width: 640px; }
+.md img.dh-img-sm { max-width: min(420px, 100%); }
+.md img.dh-img-md { max-width: min(680px, 100%); }
+.md img.dh-img-lg { max-width: min(920px, 100%); }
 
-/* When page becomes single-column (PDF hidden), allow slightly bigger image */
-.viewer.single-column .md-body img,
-.viewer.single-column .md-body .dh-img {
-  max-width: 560px;
-}
 
 
 

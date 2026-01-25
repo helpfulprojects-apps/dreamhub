@@ -24,31 +24,40 @@
     return s.length > 0;
   }
 
+  function escAttr(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  
+  function safeUrl(u) {
+    u = String(u || "").trim();
+    // allow http(s), absolute, and relative paths
+    if (u.startsWith("http://") || u.startsWith("https://") || u.startsWith("/") || u.startsWith("./") || u.startsWith("../")) return u;
+    return "#";
+  }
+  
   function inline(md) {
-    // Escape HTML first (keeps things safe)
     let s = esc(md);
-
-    // ✅ Images: ![alt](url)
-    s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (m, alt, url) => {
-      const u = url.trim();
-      if (!isSafeUrl(u)) return "";
-      return `<img class="md-img" src="${u}" alt="${esc(alt)}" loading="lazy" />`;
-    });
-
-    // Bold / Italic
+  
+    // bold + italic
     s = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
     s = s.replace(/\*(.+?)\*/g, "<em>$1</em>");
-
+  
+    // ✅ Images: ![alt](url){sm|md|lg}  (size part is optional)
+    s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)(\{(sm|md|lg)\})?/g, (m, alt, url, _all, size) => {
+      const src = safeUrl(url);
+      const cls = size ? `dh-img dh-img-${size}` : "dh-img";
+      return `<img src="${escAttr(src)}" alt="${escAttr(alt)}" class="${cls}" loading="lazy" />`;
+    });
+  
     // Links: [text](url)
     s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, t, u) => {
-      const url = (u || "").trim();
-      const safe = isSafeUrl(url) ? url : "#";
-      const isHttp = safe.startsWith("http://") || safe.startsWith("https://");
-      return `<a href="${safe}" target="${isHttp ? "_blank" : "_self"}" rel="noopener">${t}</a>`;
+      const safe = safeUrl(u);
+      return `<a href="${escAttr(safe)}" target="${safe.startsWith("http") ? "_blank" : "_self"}" rel="noopener">${t}</a>`;
     });
-
+  
     return s;
   }
+  
 
   function render(mdText) {
     const lines = mdText.replace(/\r\n/g, "\n").split("\n");
