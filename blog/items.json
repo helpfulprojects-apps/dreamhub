@@ -7,6 +7,14 @@
       "tag": "Post",
       "icon": "\ud83d\udcdd",
       "meta": "Sample"
+    },
+    {
+      "id": "Test",
+      "title": "Test post",
+      "summary": "Chitranna.",
+      "tag": "Post",
+      "icon": "\ud83d\udcdd",
+      "meta": "Sample"
     }
   ]
 }
