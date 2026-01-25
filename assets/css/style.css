@@ -182,20 +182,19 @@ body{
 
 /* ===== Markdown image safety & predictability ===== */
 
-/* Markdown images (safe + predictable across devices) */
-.md img.dh-img {
+/* Markdown images (works everywhere) */
+.dh-img {
   display: block;
-  width: 100%;
+  max-width: 100%;
   height: auto;
-  max-width: min(680px, 100%);
   margin: 12px auto;
   border-radius: 12px;
 }
 
-/* Optional size variants */
-.md img.dh-img-sm { max-width: min(420px, 100%); }
-.md img.dh-img-md { max-width: min(680px, 100%); }
-.md img.dh-img-lg { max-width: min(920px, 100%); }
+/* Predictable sizes, still mobile-safe */
+.dh-img-sm { width: min(360px, 100%); }
+.dh-img-md { width: min(520px, 100%); }
+.dh-img-lg { width: min(720px, 100%); }
 
 
 
