@@ -26,8 +26,10 @@
 function api(action, payload) {
     return new Promise((resolve, reject) => {
       const url = window.DH?.inviteApi;
-      if (!url || !url.startsWith("https://")) {
-        reject(new Error("Missing window.DH.inviteApi in apps/invite/config.js"));
+      console.log("inviteApi =", window.DH && window.DH.inviteApi, "type=", typeof (window.DH && window.DH.inviteApi));
+
+      if (typeof url !== "string" || !url.startsWith("https://")) {
+        reject(new Error("Missing/invalid window.DH.inviteApi (check apps/invite/config.js)"));
         return;
       }
   
