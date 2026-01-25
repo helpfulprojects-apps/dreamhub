@@ -321,3 +321,24 @@ body{
 @media (max-width: 900px) {
   .dh-app .viewer { flex-direction: column; }
 }
+
+/* Apps: invite pages */
+body.dh-app main.container {
+  padding-top: 16px;
+  padding-bottom: 24px;
+}
+
+body.dh-app .viewer {
+  margin-top: 16px;
+}
+
+body.dh-app .panel {
+  border-radius: 14px;
+}
+
+body.dh-app .panel-body input,
+body.dh-app .panel-body textarea,
+body.dh-app .panel-body select {
+  width: 100%;
+  box-sizing: border-box;
+}
