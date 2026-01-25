@@ -73,8 +73,8 @@
   document.addEventListener("DOMContentLoaded", async () => {
     window.DH_LAYOUT?.renderHeader?.("dh-header");
 
-    const eventId = DH_INVITE.q("event");
-    const openToken = DH_INVITE.q("t");
+    const eventId = window.DH.inviteApi.q("event");
+    const openToken = window.DH.inviteApi.q("t");
 
     if (!eventId || !openToken) {
       document.getElementById("evDetails").innerHTML = `<div class="notice error">Invalid link. Missing event or token.</div>`;
@@ -82,7 +82,7 @@
     }
 
     try {
-      const res = await DH_INVITE.api("public", { eventId, openToken });
+      const res = await window.DH.inviteApi.api("public", { eventId, openToken });
       if (!res.ok) throw new Error(res.error || "Failed to load invite");
 
       document.title = `RSVP • ${res.event.title}`;
@@ -90,12 +90,12 @@
 
       const e = res.event;
       document.getElementById("evDetails").innerHTML = `
-        <div><strong>Host:</strong> ${DH_INVITE.esc(e.hostName)}</div>
-        <div><strong>Date:</strong> ${DH_INVITE.esc(e.date)}</div>
-        <div><strong>Time:</strong> ${DH_INVITE.esc(e.time)}</div>
-        ${e.location ? `<div><strong>Location:</strong> ${DH_INVITE.esc(e.location)}</div>` : ""}
-        ${e.rsvpBy ? `<div><strong>RSVP By:</strong> ${DH_INVITE.esc(e.rsvpBy)}</div>` : ""}
-        ${e.message ? `<div style="margin-top:10px;"><strong>Message:</strong><br/>${DH_INVITE.nl2br(DH_INVITE.esc(e.message))}</div>` : ""}
+        <div><strong>Host:</strong> ${window.DH.inviteApi.esc(e.hostName)}</div>
+        <div><strong>Date:</strong> ${window.DH.inviteApi.esc(e.date)}</div>
+        <div><strong>Time:</strong> ${window.DH.inviteApi.esc(e.time)}</div>
+        ${e.location ? `<div><strong>Location:</strong> ${window.DH.inviteApi.esc(e.location)}</div>` : ""}
+        ${e.rsvpBy ? `<div><strong>RSVP By:</strong> ${window.DH.inviteApi.esc(e.rsvpBy)}</div>` : ""}
+        ${e.message ? `<div style="margin-top:10px;"><strong>Message:</strong><br/>${window.DH.inviteApi.nl2br(window.DH.inviteApi.esc(e.message))}</div>` : ""}
       `;
 
       document.getElementById("btnSubmit").addEventListener("click", async () => {
@@ -115,7 +115,7 @@
         }
 
         try {
-          const r = await DH_INVITE.api("rsvp", payload);
+          const r = await window.DH.inviteApi.api("rsvp", payload);
           if (!r.ok) throw new Error(r.error || "RSVP failed");
           showNotice("Thanks! Your RSVP was saved ✅", false);
         } catch (err) {
@@ -124,7 +124,7 @@
       });
 
     } catch (err) {
-      document.getElementById("evDetails").innerHTML = `<div class="notice error">${DH_INVITE.esc(err.message)}</div>`;
+      document.getElementById("evDetails").innerHTML = `<div class="notice error">${window.DH.inviteApi.esc(err.message)}</div>`;
     }
 
     function showNotice(msg, isErr) {

@@ -65,7 +65,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     window.DH_LAYOUT?.renderHeader?.("dh-header");
 
-    const ev = DH_INVITE.q("event");
+    const ev = window.DH.inviteApi.q("event");
     if (ev) document.getElementById("eventId").value = ev;
 
     document.getElementById("btnLoad").addEventListener("click", async () => {
@@ -78,7 +78,7 @@
       }
 
       try {
-        const res = await DH_INVITE.api("dashboard", { eventId, secret });
+        const res = await window.DH.inviteApi.api("dashboard", { eventId, secret });
         if (!res.ok) throw new Error(res.error || "Failed");
 
         document.getElementById("dashTitle").textContent = res.event.title + " • Dashboard";
@@ -86,12 +86,12 @@
         const s = res.summary;
         const rows = res.rsvps.map(r => `
           <tr>
-            <td>${DH_INVITE.esc(r.guestName)}</td>
-            <td>${DH_INVITE.esc(r.response)}</td>
+            <td>${window.DH.inviteApi.esc(r.guestName)}</td>
+            <td>${window.DH.inviteApi.esc(r.response)}</td>
             <td>${r.adults}</td>
             <td>${r.kids}</td>
-            <td>${DH_INVITE.esc(r.notes || "")}</td>
-            <td class="muted small">${DH_INVITE.esc(r.updatedAt)}</td>
+            <td>${window.DH.inviteApi.esc(r.notes || "")}</td>
+            <td class="muted small">${window.DH.inviteApi.esc(r.updatedAt)}</td>
           </tr>
         `).join("");
 

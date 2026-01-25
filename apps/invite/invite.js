@@ -31,7 +31,7 @@ function api(action, payload) {
         return;
       }
   
-      const cb = "DH_INVITE_CB_" + Math.random().toString(36).slice(2);
+      const cb = "window.DH.inviteApi_CB_" + Math.random().toString(36).slice(2);
       const u = new URL(url);
   
       // payload -> base64url

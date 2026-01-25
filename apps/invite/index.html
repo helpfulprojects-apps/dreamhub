@@ -144,7 +144,7 @@
       }
 
       try {
-        const res = await DH_INVITE.api("create", payload);
+        const res = await window.DH.inviteApi.api("create", payload);
         if (!res.ok) throw new Error(res.error || "Create failed");
 
         $("resultEmpty").style.display = "none";
@@ -153,7 +153,7 @@
         $("outEventId").textContent = res.eventId;
         $("outRecovery").textContent = res.recoveryCode;
 
-        const base = DH_INVITE.base();
+        const base = window.DH.inviteApi.base();
         const guestUrl = `${base}/guest.html?event=${encodeURIComponent(res.eventId)}&t=${encodeURIComponent(res.openToken)}`;
         const hostUrl  = `${base}/host.html?event=${encodeURIComponent(res.eventId)}`;
 
