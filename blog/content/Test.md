@@ -9,7 +9,7 @@ This is a **sample blog post**.
 
 ![Plain Dosa](images/Dosa.jpg)
 
-*Golden crispy dosa served hot*
+*chitranna*
 
 ![Plain Dosa](images/Dosa.jpg){sm}
 *Golden crispy dosa served hot*
