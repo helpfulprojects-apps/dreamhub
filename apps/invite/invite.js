@@ -1,7 +1,9 @@
 (function () {
     function base() {
-      // Use config base if present; else derive from location
-      return window.DH_INVITE_BASE || (location.origin + location.pathname.replace(/\/(index\.html)?$/, ""));
+      // Prefer explicit config; else derive from current folder
+      // If you want: set window.DH.inviteBase = "/dreamhub/apps/invite" in config.js
+      if (window.DH && window.DH.inviteBase) return window.DH.inviteBase;
+      return location.origin + location.pathname.replace(/\/(index\.html)?$/, "");
     }
   
     function q(name) {
@@ -23,35 +25,48 @@
     // JSONP call to Apps Script to avoid CORS issues on GitHub Pages
     function api(action, payload) {
       return new Promise((resolve, reject) => {
-        const url = window.DH_INVITE_API;
+        const url = window.DH && window.DH.inviteApi;  // ✅ uses config.js
         if (!url || !url.startsWith("https://")) {
-          reject(new Error("Missing DH_INVITE_API in apps/invite/config.js"));
+          reject(new Error("Missing window.DH.inviteApi in apps/invite/config.js"));
           return;
         }
   
         const cb = "DH_INVITE_CB_" + Math.random().toString(36).slice(2);
         const script = document.createElement("script");
+        script.async = true;
   
-        window[cb] = (data) => {
-          try {
-            resolve(data);
-          } finally {
-            delete window[cb];
-            script.remove();
-          }
+        const cleanup = () => {
+          try { delete window[cb]; } catch (e) {}
+          if (script && script.parentNode) script.parentNode.removeChild(script);
         };
   
-        const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload || {}))))
-          .replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+        const timeout = setTimeout(() => {
+          cleanup();
+          reject(new Error("Timeout calling Apps Script"));
+        }, 15000);
   
-        const sep = url.includes("?") ? "&" : "?";
-        script.src = `${url}${sep}action=${encodeURIComponent(action)}&payload=${encodeURIComponent(b64)}&callback=${encodeURIComponent(cb)}`;
+        window[cb] = (data) => {
+          clearTimeout(timeout);
+          cleanup();
+          resolve(data);
+        };
+  
+        // ✅ Standard base64 (do NOT convert to base64url; keep + / =)
+        const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload || {}))));
+  
+        // ✅ Safe URL building (no accidental double '?' etc.)
+        const u = new URL(url);
+        u.searchParams.set("action", action);
+        u.searchParams.set("payload", b64);
+        u.searchParams.set("callback", cb);
+  
         script.onerror = () => {
-          delete window[cb];
-          script.remove();
+          clearTimeout(timeout);
+          cleanup();
           reject(new Error("Network/API error calling Apps Script"));
         };
   
+        script.src = u.toString();
         document.head.appendChild(script);
       });
     }
