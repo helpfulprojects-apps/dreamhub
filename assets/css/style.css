@@ -162,6 +162,24 @@ body{
   gap:10px;
 }
 
+/* Markdown image handling */
+.md img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1rem auto;
+  border-radius: 10px;
+}
+
+/* Optional caption styling */
+.md em {
+  display: block;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
 /* =========================================================
    OPTIONAL PDF HANDLING
    Make Markdown full-width when PDF is missing/hidden

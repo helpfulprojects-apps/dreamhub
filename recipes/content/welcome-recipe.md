@@ -10,3 +10,6 @@ This is a **sample recipe**.
 - Mix
 - Cook
 - Serve
+
+![Plain Dosa](images/dosa.jpg)
+*Golden crispy dosa served hot*
