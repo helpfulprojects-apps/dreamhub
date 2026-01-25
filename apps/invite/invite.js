@@ -22,55 +22,61 @@
       return String(s).replace(/\n/g, "<br/>");
     }
   
-    // JSONP call to Apps Script to avoid CORS issues on GitHub Pages
-    function api(action, payload) {
-      return new Promise((resolve, reject) => {
-        const url = window.DH && window.DH.inviteApi;  // ✅ uses config.js
-        if (!url || !url.startsWith("https://")) {
-          reject(new Error("Missing window.DH.inviteApi in apps/invite/config.js"));
-          return;
-        }
+// JSONP call to Apps Script (no CORS issues on GitHub Pages)
+function api(action, payload) {
+    return new Promise((resolve, reject) => {
+      const url = window.DH?.inviteApi;
+      if (!url || !url.startsWith("https://")) {
+        reject(new Error("Missing window.DH.inviteApi in apps/invite/config.js"));
+        return;
+      }
   
-        const cb = "DH_INVITE_CB_" + Math.random().toString(36).slice(2);
-        const script = document.createElement("script");
-        script.async = true;
+      const cb = "DH_INVITE_CB_" + Math.random().toString(36).slice(2);
+      const u = new URL(url);
   
-        const cleanup = () => {
-          try { delete window[cb]; } catch (e) {}
-          if (script && script.parentNode) script.parentNode.removeChild(script);
-        };
+      // payload -> base64url
+      const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload || {}))))
+        .replaceAll("+", "-")
+        .replaceAll("/", "_")
+        .replaceAll("=", "");
   
-        const timeout = setTimeout(() => {
-          cleanup();
-          reject(new Error("Timeout calling Apps Script"));
-        }, 15000);
+      u.searchParams.set("action", action);
+      u.searchParams.set("payload", b64);
+      u.searchParams.set("callback", cb);
   
-        window[cb] = (data) => {
-          clearTimeout(timeout);
-          cleanup();
-          resolve(data);
-        };
+      const script = document.createElement("script");
   
-        // ✅ Standard base64 (do NOT convert to base64url; keep + / =)
-        const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload || {}))));
+      const cleanup = () => {
+        try { delete window[cb]; } catch {}
+        try { script.remove(); } catch {}
+      };
   
-        // ✅ Safe URL building (no accidental double '?' etc.)
-        const u = new URL(url);
-        u.searchParams.set("action", action);
-        u.searchParams.set("payload", b64);
-        u.searchParams.set("callback", cb);
+      window[cb] = (data) => {
+        cleanup();
+        resolve(data);
+      };
   
-        script.onerror = () => {
-          clearTimeout(timeout);
-          cleanup();
-          reject(new Error("Network/API error calling Apps Script"));
-        };
+      script.onerror = () => {
+        cleanup();
+        reject(new Error("Network/API error calling Apps Script"));
+      };
   
-        script.src = u.toString();
-        document.head.appendChild(script);
-      });
-    }
+      // optional timeout (helps when script is blocked / wrong URL)
+      const t = setTimeout(() => {
+        cleanup();
+        reject(new Error("Timeout calling Apps Script"));
+      }, 15000);
   
-    window.DH_INVITE = { api, base, q, esc, nl2br };
+      const oldCb = window[cb];
+      window[cb] = (data) => { clearTimeout(t); oldCb(data); };
+  
+      script.src = u.toString();
+      script.async = true;
+      document.head.appendChild(script);
+    });
+  }
+  
+  
+    window.DH.inviteApi = { api, base, q, esc, nl2br };
   })();
   
