@@ -161,6 +161,34 @@ body{
   flex-wrap:wrap;
   gap:10px;
 }
+
+/* =========================================================
+   OPTIONAL PDF HANDLING
+   Make Markdown full-width when PDF is missing/hidden
+   ========================================================= */
+
+/* Case 1: PDF panel explicitly hidden */
+.viewer:has(#pdf-panel[style*="display: none"]),
+.viewer:has(#pdf-panel.hidden),
+.viewer:has(#pdf-panel[hidden]) {
+  grid-template-columns: 1fr !important;
+}
+
+/* Make Markdown span full width */
+.viewer:has(#pdf-panel[style*="display: none"]) #md-panel,
+.viewer:has(#pdf-panel.hidden) #md-panel,
+.viewer:has(#pdf-panel[hidden]) #md-panel {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+}
+
+/* Case 2: iframe exists but PDF is missing (no src) */
+.viewer:has(#pdf-frame:not([src])),
+.viewer:has(#pdf-frame[src=""]) {
+  grid-template-columns: 1fr !important;
+}
+
+
 .viewer{
   display:grid;
   grid-template-columns: 1.1fr .9fr;
