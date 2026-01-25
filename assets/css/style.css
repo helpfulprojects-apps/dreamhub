@@ -275,3 +275,49 @@ body{
   border:0;
   background:white;
 }
+/* -----------------------------
+   DreamHub Invite App Patch
+   Paste at END of style.css
+-------------------------------- */
+.dh-app .container { max-width: 1100px; }
+.dh-app .viewer { gap: 16px; }
+.dh-app .panel { border-radius: 16px; overflow: hidden; }
+.dh-app .panel-head { padding: 14px 16px; }
+.dh-app .panel-body { padding: 16px; }
+
+.dh-app .input,
+.dh-app textarea.input,
+.dh-app select.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  margin-top: 6px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+}
+
+.dh-app .btn {
+  display: inline-block;
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.dh-app .notice { border-radius: 12px; padding: 12px 14px; margin: 12px 0; }
+.dh-app .notice.error { border: 1px solid rgba(200,0,0,.25); }
+
+.dh-app .table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.dh-app .table th, .dh-app .table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  vertical-align: top;
+  text-align: left;
+}
+.dh-app .table th { font-weight: 600; }
+
+@media (max-width: 900px) {
+  .dh-app .viewer { flex-direction: column; }
+}
