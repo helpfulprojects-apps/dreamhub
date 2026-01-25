@@ -39,26 +39,64 @@
   }
 
   async function renderMarkdownViewer(opts) {
-    const { mdPath, pdfPath, titleId, bodyId, pdfId, pdfDownloadId } = opts;
+    const { mdPath, pdfPath, titleId, bodyId, pdfId, pdfDownloadId, pdfPanelId } = opts;
+  
     const titleEl = document.getElementById(titleId);
-    const bodyEl = document.getElementById(bodyId);
-    const pdfEl = document.getElementById(pdfId);
-    const pdfDl = document.getElementById(pdfDownloadId);
-
+    const bodyEl  = document.getElementById(bodyId);
+  
+    const pdfEl   = document.getElementById(pdfId);
+    const pdfDl   = document.getElementById(pdfDownloadId);
+    const pdfPanelEl = pdfPanelId ? document.getElementById(pdfPanelId) : null;
+  
+    // --- Load markdown (same as before) ---
     const res = await fetch(window.DH_ABS(mdPath), { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to load markdown: " + mdPath);
     const md = await res.text();
-
+  
     let title = "Details";
     const m = md.match(/^#\s+(.+)$/m);
     if (m) title = m[1].trim();
-
+  
     if (titleEl) titleEl.textContent = title;
     if (bodyEl) bodyEl.innerHTML = window.DH_MD.render(md);
-
-    if (pdfEl && pdfPath) pdfEl.setAttribute("src", window.DH_ABS(pdfPath));
-    if (pdfDl && pdfPath) pdfDl.setAttribute("href", window.DH_ABS(pdfPath));
+  
+    // --- NEW: Handle optional PDF (hide panel when missing) ---
+    const hidePdfPanel = () => {
+      if (pdfPanelEl) pdfPanelEl.style.display = "none";
+    };
+  
+    // 1) If no pdfPath provided => hide immediately
+    if (!pdfPath) {
+      hidePdfPanel();
+      return;
+    }
+  
+    // 2) If pdfPath exists, verify file exists. If not, hide panel.
+    try {
+      const pdfUrl = window.DH_ABS(pdfPath);
+  
+      // HEAD is lightweight; if it fails on any host, fall back to GET
+      let ok = false;
+      try {
+        const head = await fetch(pdfUrl, { method: "HEAD", cache: "no-store" });
+        ok = head.ok;
+      } catch (e) {
+        const get = await fetch(pdfUrl, { method: "GET", cache: "no-store" });
+        ok = get.ok;
+      }
+  
+      if (!ok) {
+        hidePdfPanel();
+        return;
+      }
+  
+      if (pdfEl) pdfEl.setAttribute("src", pdfUrl);
+      if (pdfDl) pdfDl.setAttribute("href", pdfUrl);
+    } catch (e) {
+      hidePdfPanel();
+    }
   }
+  
 
   window.DH_CONTENT = { renderList, renderMarkdownViewer, loadJSON };
 })();

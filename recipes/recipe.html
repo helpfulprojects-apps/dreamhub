@@ -21,7 +21,7 @@
     <div class="panel-head"><strong>Recipe</strong><span class="muted small">Markdown</span></div>
     <div class="panel-body md" id="md-body"></div>
   </div>
-  <div class="panel">
+  <div class="panel" id="pdf-panel">
     <div class="panel-head"><strong>Attachment (optional)</strong><a id="pdf-download" class="btn" href="#" download>Download</a></div>
     <iframe class="pdf" id="pdf-frame" title="PDF preview"></iframe>
   </div>
@@ -44,7 +44,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     titleId: "page-title",
     bodyId: "md-body",
     pdfId: "pdf-frame",
-    pdfDownloadId: "pdf-download"
+    pdfDownloadId: "pdf-download",
+    pdfPanelId: "pdf-panel"
   });
 });
 </script>
