@@ -1,4 +1,4 @@
-## Color the Same Numbers with the Same Color – Fun Number Recognition Activity
+# Color the Same Numbers with the Same Color – Fun Number Recognition Activity
 
 Make number practice fun and engaging with this Color the Same Numbers with the Same Color worksheet! Children identify matching numbers and color them using the same color, turning learning into a playful and creative activity.
 
