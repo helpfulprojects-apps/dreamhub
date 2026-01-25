@@ -5,11 +5,8 @@ This is a **sample recipe**.
 ## Ingredients
 - 1 cup example
 - 2 tbsp example
-<img
-  src="/dreamhub/recipes/images/Dosa.jpg"
-  alt="Plain Dosa"
-  style="max-width:100%;height:auto;border-radius:12px;margin-top:12px;"
-/>
+![Plain Dosa](images/Dosa.jpg)
+
 *Golden crispy dosa served cold*
 
 
@@ -18,5 +15,6 @@ This is a **sample recipe**.
 - Cook
 - Serve
 
-<img src="./images/Dosa.jpg" alt="Plain Dosa" style="max-width:100%;height:auto;border-radius:12px;" />
+![Plain Dosa](images/Dosa.jpg)
+
 *Golden crispy dosa served hot*

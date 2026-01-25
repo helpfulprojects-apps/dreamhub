@@ -180,6 +180,15 @@ body{
   margin-top: 0.25rem;
 }
 
+.md-img{
+  max-width:100%;
+  height:auto;
+  border-radius:12px;
+  margin-top:12px;
+  display:block;
+}
+
+
 /* =========================================================
    OPTIONAL PDF HANDLING
    Make Markdown full-width when PDF is missing/hidden
