@@ -11,5 +11,5 @@ This is a **sample recipe**.
 - Cook
 - Serve
 
-![Plain Dosa](images/dosa.jpg)
+![Plain Dosa](images/Dosa.jpg)
 *Golden crispy dosa served hot*
