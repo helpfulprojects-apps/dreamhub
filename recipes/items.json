@@ -7,6 +7,14 @@
       "tag": "Recipe",
       "icon": "\ud83c\udf72",
       "meta": "Sample"
+    },
+    {
+      "id": "Sugarcane-Juice-without-Sugarcane",
+      "title": "Sugarcane Juice without Sugarcane",
+      "summary": "This easy homemade drink tastes surprisingly close to fresh sugarcane juice.",
+      "tag": "Recipe",
+      "icon": "\ud83c\udf72",
+      "meta": "Sample"
     }
   ]
 }

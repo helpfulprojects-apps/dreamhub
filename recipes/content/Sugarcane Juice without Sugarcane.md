@@ -42,15 +42,3 @@ Stir once and serve immediately. You can add ice cubes if desired.
 Adjust jaggery based on sweetness preference.
 Best consumed fresh for maximum taste and nutrients.
 Avoid storing for long, as jaggery-based drinks ferment quickly.
-
-
-![Plain Dosa](images/Dosa.jpg)
-
-*Golden crispy dosa served hot*
-
-![Plain Dosa](images/Dosa.jpg){sm}
-*Golden crispy dosa served hot*
-![Plain Dosa](images/Dosa.jpg){md}
-*Golden crispy dosa served hot*
-![Plain Dosa](images/Dosa.jpg){lg}
-*Golden crispy dosa served hot*
