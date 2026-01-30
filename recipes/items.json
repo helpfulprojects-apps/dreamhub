@@ -1,20 +1,20 @@
 {
   "items": [
     {
-      "id": "welcome-recipe",
-      "title": "Welcome Recipe",
-      "summary": "Sample recipe post using Markdown + (optional) PDF.",
-      "tag": "Recipe",
-      "icon": "\ud83c\udf72",
-      "meta": "Sample"
-    },
-    {
       "id": "Sugarcane-Juice-without-Sugarcane",
       "title": "Sugarcane Juice without Sugarcane",
       "summary": "This easy homemade drink tastes surprisingly close to fresh sugarcane juice.",
       "tag": "Recipe",
       "icon": "\ud83c\udf72",
       "meta": "Drink"
+    },
+    {
+      "id": "Kara-Pongal",
+      "title": "Kara Pongal",
+      "summary": "Kara Pongal is a traditional South Indian comfort dish made with rice and moong dal.",
+      "tag": "Recipe",
+      "icon": "\ud83c\udf72",
+      "meta": "Breakfast"
     }
   ]
 }
