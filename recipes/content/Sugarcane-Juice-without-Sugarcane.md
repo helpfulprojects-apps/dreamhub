@@ -20,7 +20,7 @@ Fresh mint leaves – 6–8 leaves
 Water – 1 to 1½ cups (adjust as needed)
 
 ## Steps
-1. Prepare the ingredients
+#1. Prepare the ingredients
 Peel and roughly chop the ginger. Wash the mint leaves thoroughly. If the jaggery is in solid form, grate or break it into small pieces so it blends easily.
 ![Sugarcane Juice](images/Sugarcane4.jpg){md}
 
