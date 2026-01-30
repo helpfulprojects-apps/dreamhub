@@ -1,5 +1,7 @@
 (function () {
+  // --- helpers ---
   function base() {
+    // Prefer explicit config; else derive from current folder
     if (window.DH && window.DH.inviteBase) return window.DH.inviteBase;
     return location.origin + location.pathname.replace(/\/(index\.html)?$/, "");
   }
@@ -20,7 +22,7 @@
     return String(s ?? "").replace(/\n/g, "<br/>");
   }
 
-  // JSONP call to Apps Script (no CORS issues on GitHub Pages)
+  // JSONP call to Apps Script (avoids CORS on GitHub Pages)
   function api(action, payload) {
     return new Promise((resolve, reject) => {
       const url = window.DH && window.DH.inviteApi; // MUST be a string URL from config.js
@@ -44,11 +46,14 @@
       u.searchParams.set("callback", cb);
 
       const script = document.createElement("script");
+      let cleaned = false;
 
-      const cleanup = () => {
-        try { delete window[cb]; } catch {}
-        try { script.remove(); } catch {}
-      };
+      function cleanup() {
+        if (cleaned) return;
+        cleaned = true;
+        try { delete window[cb]; } catch (e) {}
+        try { script.remove(); } catch (e) {}
+      }
 
       const t = setTimeout(() => {
         cleanup();
@@ -73,7 +78,9 @@
     });
   }
 
-  // ✅ expose library here (DO NOT overwrite window.DH.inviteApi string!)
+  // IMPORTANT:
+  // - Do NOT overwrite window.DH.inviteApi (string)
+  // - Put functions under window.DH.invite
   window.DH = window.DH || {};
   window.DH.invite = { api, base, q, esc, nl2br };
 })();
