@@ -144,7 +144,7 @@
       }
 
       try {
-        const res = await window.DH.inviteApi.api("create", payload);
+        const res = await window.DH.invite.api("create", payload);
         if (!res.ok) throw new Error(res.error || "Create failed");
 
         $("resultEmpty").style.display = "none";

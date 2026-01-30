@@ -78,7 +78,7 @@
       }
 
       try {
-        const res = await window.DH.inviteApi.api("dashboard", { eventId, secret });
+        const res = await window.DH.invite.api("dashboard", { eventId, secret });
         if (!res.ok) throw new Error(res.error || "Failed");
 
         document.getElementById("dashTitle").textContent = res.event.title + " • Dashboard";

@@ -82,7 +82,7 @@
     }
 
     try {
-      const res = await window.DH.inviteApi.api("public", { eventId, openToken });
+      const res = await window.DH.invite.api("public", { eventId, openToken });
       if (!res.ok) throw new Error(res.error || "Failed to load invite");
 
       document.title = `RSVP • ${res.event.title}`;
@@ -115,7 +115,7 @@
         }
 
         try {
-          const r = await window.DH.inviteApi.api("rsvp", payload);
+          const r = await window.DH.invite.api("rsvp", payload);
           if (!r.ok) throw new Error(r.error || "RSVP failed");
           showNotice("Thanks! Your RSVP was saved ✅", false);
         } catch (err) {

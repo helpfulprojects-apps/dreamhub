@@ -1,8 +1,6 @@
 (function () {
-  window.DH = window.DH || {};
-
   function base() {
-    if (window.DH.inviteBase) return window.DH.inviteBase;
+    if (window.DH && window.DH.inviteBase) return window.DH.inviteBase;
     return location.origin + location.pathname.replace(/\/(index\.html)?$/, "");
   }
 
@@ -19,58 +17,63 @@
   }
 
   function nl2br(s) {
-    return String(s).replace(/\n/g, "<br/>");
+    return String(s ?? "").replace(/\n/g, "<br/>");
   }
 
-  // JSONP call to Apps Script (safe for GitHub Pages)
+  // JSONP call to Apps Script (no CORS issues on GitHub Pages)
   function api(action, payload) {
     return new Promise((resolve, reject) => {
-      const url = window.DH.inviteApi;
+      const url = window.DH && window.DH.inviteApi; // MUST be a string URL from config.js
 
-      if (typeof url !== "string" || !/^https:\/\/script\.google\.com\/macros\/s\//.test(url)) {
+      if (typeof url !== "string" || !url.startsWith("https://")) {
         reject(new Error("Missing/invalid window.DH.inviteApi (check apps/invite/config.js)"));
         return;
       }
 
       const cb = "DH_INVITE_CB_" + Math.random().toString(36).slice(2);
+      const u = new URL(url);
+
+      // payload -> base64url
+      const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload || {}))))
+        .replaceAll("+", "-")
+        .replaceAll("/", "_")
+        .replaceAll("=", "");
+
+      u.searchParams.set("action", action);
+      u.searchParams.set("payload", b64);
+      u.searchParams.set("callback", cb);
+
       const script = document.createElement("script");
 
-      const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload || {}))))
-        .replace(/\+/g, "-")
-        .replace(/\//g, "_")
-        .replace(/=+$/, "");
+      const cleanup = () => {
+        try { delete window[cb]; } catch {}
+        try { script.remove(); } catch {}
+      };
+
+      const t = setTimeout(() => {
+        cleanup();
+        reject(new Error("Timeout calling Apps Script"));
+      }, 15000);
 
       window[cb] = (data) => {
+        clearTimeout(t);
         cleanup();
         resolve(data);
       };
 
-      function cleanup() {
-        try { delete window[cb]; } catch {}
-        try { script.remove(); } catch {}
-      }
-
       script.onerror = () => {
+        clearTimeout(t);
         cleanup();
         reject(new Error("Network/API error calling Apps Script"));
       };
 
-      script.src =
-        url +
-        "?action=" + encodeURIComponent(action) +
-        "&payload=" + encodeURIComponent(b64) +
-        "&callback=" + encodeURIComponent(cb);
-
+      script.src = u.toString();
+      script.async = true;
       document.head.appendChild(script);
     });
   }
 
-  // ✅ IMPORTANT: expose helpers under DH.invite (NOT inviteApi)
-  window.DH.invite = {
-    api,
-    base,
-    q,
-    esc,
-    nl2br
-  };
+  // ✅ expose library here (DO NOT overwrite window.DH.inviteApi string!)
+  window.DH = window.DH || {};
+  window.DH.invite = { api, base, q, esc, nl2br };
 })();
