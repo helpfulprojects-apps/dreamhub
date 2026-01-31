@@ -1,194 +1,107 @@
 <!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Invitation Maker • DreamHub</title>
-      
-        <link rel="stylesheet" href="/dreamhub/assets/css/style.css" />
-      
-        <!-- IMPORTANT: config must load BEFORE layout -->
-        <script defer src="/dreamhub/assets/js/config.js"></script>
-        <script defer src="/dreamhub/assets/js/layout.js"></script>
-      
-        <!-- App scripts (after layout) -->
-        <script defer src="./config.js"></script>
-        <script defer src="./invite.js"></script>
-      </head>
-      
-
-<body class="dh-app">
-  <div id="dh-header"></div>
-
-  <main class="container">
-    <div class="breadcrumbs">
-      <a href="/dreamhub/">Home</a> / <a href="/dreamhub/apps.html">Apps</a> / Invitation Maker
+<html><head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="./invite.css">
+<title>DreamHub • Invitation Maker</title>
+</head><body>
+<div class="dh-wrap">
+  <div class="dh-card">
+    <h1 class="dh-title">Create an Invitation</h1>
+    <p class="dh-sub">Host email is required so you can always access your dashboard link. Share the guest link anywhere.</p>
+    <div class="dh-grid">
+      <label class="dh-label dh-full">Event title <span class="dh-muted">(required)</span>
+        <input id="title" class="dh-input" placeholder="e.g., Celebration Dinner"/></label>
+      <label class="dh-label">Date & time <span class="dh-muted">(required)</span>
+        <input id="dt" class="dh-input" type="datetime-local"/></label>
+      <label class="dh-label">Location
+        <input id="location" class="dh-input" placeholder="e.g., Our Home / Park / Restaurant"/></label>
+      <label class="dh-label dh-full">Message (optional)
+        <textarea id="message" class="dh-textarea" rows="4" placeholder="Add a short note for guests…"></textarea></label>
+      <label class="dh-label">RSVP deadline (optional)
+        <input id="deadline" class="dh-input" type="datetime-local"/></label>
+      <label class="dh-label">Host email <span class="dh-muted">(required)</span>
+        <input id="hostEmail" class="dh-input" placeholder="you@example.com"/>
+        <span class="dh-muted">We’ll email your private dashboard link here.</span></label>
     </div>
+    <div class="dh-row" style="margin-top:12px">
+      <button id="createBtn" class="dh-btn dh-btn-primary">Create invitation</button>
+      <span id="status" class="dh-muted"></span>
+    </div>
+  </div>
 
-    <section class="hero">
-      <h1>Invitation Maker</h1>
-      <p class="muted small">Create an invite link and collect RSVPs (free, static hosting).</p>
-    </section>
+  <div id="result" class="dh-card" style="display:none;">
+    <h2 style="margin:0 0 6px;">Invitation created ✅</h2>
+    <div class="dh-muted" id="sentMsg"></div>
 
-    <div class="viewer">
-      <!-- Create form -->
-      <div class="panel">
-        <div class="panel-head">
-          <strong>Create Invitation</strong>
-          <span class="muted small">Host details</span>
-        </div>
-        <div class="panel-body">
-
-          <label class="small muted">Host Name</label>
-          <input id="hostName" class="input" placeholder="e.g., Ram" />
-
-          <label class="small muted">Occasion / Title</label>
-          <input id="title" class="input" placeholder="e.g., Birthday Party" />
-
-          <label class="small muted">Date</label>
-          <input id="date" type="date" class="input" />
-
-          <label class="small muted">Start Time</label>
-          <input id="startTime" type="time" class="input" />
-
-          <label class="small muted">End Time (optional)</label>
-          <input id="endTime" type="time" class="input" />
-
-          <label class="small muted">Location (optional)</label>
-          <input id="location" class="input" placeholder="e.g., Our Home / Park / Restaurant" />
-
-          <label class="small muted">Message (optional)</label>
-          <textarea id="message" class="input" rows="4" placeholder="A short invitation message..."></textarea>
-
-          <label class="small muted">RSVP By (optional)</label>
-          <input id="rsvpBy" type="datetime-local" class="input" />
-
-          <hr style="opacity:.2;margin:10px 0 16px 0;"/>
-
-          <label class="small muted">Admin PIN (Host Dashboard)</label>
-          <input id="adminPin" class="input" placeholder="8+ chars recommended" />
-
-          <div class="notice" style="margin-top:10px;">
-            <div><strong>Note:</strong> No email/password. If you forget your PIN, use the <strong>Recovery Code</strong> shown after create.</div>
-          </div>
-
-          <button id="btnCreate" class="btn">Create Invitation</button>
-
-          <div id="createStatus" class="notice" style="display:none;"></div>
-        </div>
+    <div style="margin-top:14px" class="dh-grid">
+      <label class="dh-label dh-full">Guest RSVP link (share this)
+        <input id="guestLink" class="dh-input" readonly /></label>
+      <div class="dh-row">
+        <button id="copyGuest" class="dh-btn dh-btn-ghost">Copy guest link</button>
+        <span class="dh-muted">Share with guests. Anyone with link can RSVP.</span>
       </div>
 
-      <!-- Output -->
-      <div class="panel">
-        <div class="panel-head">
-          <strong>Your Links</strong>
-          <span class="muted small">Share guest link</span>
-        </div>
-        <div class="panel-body">
-          <div id="resultEmpty" class="notice">
-            Create an invite to see links here.
-          </div>
-
-          <div id="resultBox" style="display:none;">
-            <div class="notice">
-              <div><strong>Event ID:</strong> <span id="outEventId"></span></div>
-              <div><strong>Recovery Code:</strong> <span id="outRecovery"></span></div>
-              <div class="muted small">Save Recovery Code safely. Without PIN/Recovery, dashboard cannot be recovered.</div>
-            </div>
-
-            <div style="margin-top:12px;">
-              <div class="muted small">Guest Link</div>
-              <div><a id="outGuestLink" href="#" target="_blank"></a></div>
-            </div>
-
-            <div style="margin-top:12px;">
-              <div class="muted small">Host Dashboard Link</div>
-              <div><a id="outHostLink" href="#" target="_blank"></a></div>
-            </div>
-
-            <div style="margin-top:18px;">
-              <button id="btnCopyGuest" class="btn">Copy Guest Link</button>
-              <button id="btnCopyHost" class="btn">Copy Host Link</button>
-            </div>
-
-            <div id="copyStatus" class="notice" style="display:none;margin-top:10px;"></div>
-          </div>
-        </div>
+      <label class="dh-label dh-full">Host dashboard link (private)
+        <input id="hostLink" class="dh-input" readonly /></label>
+      <div class="dh-row">
+        <button id="copyHost" class="dh-btn dh-btn-ghost">Copy host link</button>
+        <span class="dh-muted">Keep private. Also emailed to you.</span>
       </div>
     </div>
-  </main>
+  </div>
+</div>
 
+<div id="toast" class="dh-toast"></div>
+
+<script src="./config.js"></script>
+<script src="./invite.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    window.DH_LAYOUT?.renderHeader?.("dh-header"); // if your layout.js provides it
+  const $ = (id) => document.getElementById(id);
+  function setStatus(msg, kind) {
+    const el = $("status");
+    el.textContent = msg || "";
+    el.style.color = kind === "bad" ? "#b3261e" : "";
+  }
+  function appBaseUrl() {
+    return location.origin + (window.DH && window.DH.inviteBase ? window.DH.inviteBase : "/dreamhub/apps/invite");
+  }
 
-    const $ = (id) => document.getElementById(id);
-
-    $("btnCreate").addEventListener("click", async () => {
-      $("createStatus").style.display = "none";
+  $("createBtn").onclick = async () => {
+    try {
+      setStatus("Creating…");
       const payload = {
-        hostName: $("hostName").value.trim(),
         title: $("title").value.trim(),
-        date: $("date").value,
-        startTime: $("startTime").value,
-        endTime: $("endTime").value,
+        datetimeISO: $("dt").value,
         location: $("location").value.trim(),
         message: $("message").value.trim(),
-        rsvpBy: $("rsvpBy").value,
-        adminPin: $("adminPin").value.trim(),
+        deadlineISO: $("deadline").value,
+        hostEmail: $("hostEmail").value.trim(),
+        appBase: appBaseUrl()
       };
-
-      if (!payload.hostName || !payload.title || !payload.date || !payload.startTime || !payload.adminPin) {
-        showStatus("createStatus", "Please fill Host Name, Title, Date, Start Time, and Admin PIN.", true);
-        return;
-      }
-
-      try {
-        const res = await window.DH.invite.api("create", payload);
-        if (!res.ok) throw new Error(res.error || "Create failed");
-
-        $("resultEmpty").style.display = "none";
-        $("resultBox").style.display = "block";
-
-        $("outEventId").textContent = res.eventId;
-        $("outRecovery").textContent = res.recoveryCode;
-
-        const base = window.DH.inviteApi.base();
-        const guestUrl = `${base}/guest.html?event=${encodeURIComponent(res.eventId)}&t=${encodeURIComponent(res.openToken)}`;
-        const hostUrl  = `${base}/host.html?event=${encodeURIComponent(res.eventId)}`;
-
-        $("outGuestLink").textContent = guestUrl;
-        $("outGuestLink").href = guestUrl;
-
-        $("outHostLink").textContent = hostUrl;
-        $("outHostLink").href = hostUrl;
-
-        $("btnCopyGuest").onclick = () => copyText(guestUrl);
-        $("btnCopyHost").onclick = () => copyText(hostUrl);
-
-        showStatus("createStatus", "Invitation created successfully ✅", false);
-      } catch (e) {
-        showStatus("createStatus", e.message, true);
-      }
-    });
-
-    async function copyText(text) {
-      try {
-        await navigator.clipboard.writeText(text);
-        showStatus("copyStatus", "Copied ✅", false);
-      } catch {
-        showStatus("copyStatus", "Copy failed. Please copy manually.", true);
-      }
+      const res = await window.DH.invite.api("createEvent", payload);
+      $("guestLink").value = res.guestLink;
+      $("hostLink").value = res.hostLink;
+      $("sentMsg").textContent = "We emailed the dashboard link to: " + res.hostEmail;
+      $("result").style.display = "block";
+      window.DH.invite.toast("Invitation created ✅","ok");
+      setStatus("Done ✅");
+    } catch (e) {
+      console.error(e);
+      window.DH.invite.toast(e.message || "Failed","bad");
+      setStatus(e.message || "Failed","bad");
     }
+  };
 
-    function showStatus(id, msg, isError) {
-      const el = $(id);
-      el.style.display = "block";
-      el.className = "notice" + (isError ? " error" : "");
-      el.textContent = msg;
-    }
-  });
+  $("copyGuest").onclick = async () => {
+    const ok = await window.DH.invite.copyText($("guestLink").value);
+    window.DH.invite.toast(ok ? "Guest link copied ✅" : "Copy failed", ok ? "ok" : "bad");
+  };
+  $("copyHost").onclick = async () => {
+    const ok = await window.DH.invite.copyText($("hostLink").value);
+    window.DH.invite.toast(ok ? "Host link copied ✅" : "Copy failed", ok ? "ok" : "bad");
+  };
 </script>
 
-</body>
-</html>
+</body></html>

@@ -1,140 +1,135 @@
 <!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Invitation Maker • DreamHub</title>
-      
-        <link rel="stylesheet" href="/dreamhub/assets/css/style.css" />
-      
-        <!-- IMPORTANT: config must load BEFORE layout -->
-        <script defer src="/dreamhub/assets/js/config.js"></script>
-        <script defer src="/dreamhub/assets/js/layout.js"></script>
-      
-        <!-- App scripts (after layout) -->
-        <script defer src="./config.js"></script>
-        <script defer src="./invite.js"></script>
-      </head>
-      
+<html><head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="./invite.css">
+<title>DreamHub • RSVP</title>
+</head><body>
+<div class="dh-wrap">
+  <div class="dh-card">
+    <h1 id="title" class="dh-title">Loading…</h1>
+    <div class="dh-muted" id="meta"></div>
+    <p id="message" style="margin-top:10px"></p>
+    <div class="dh-muted" id="deadlineNote" style="margin-top:8px"></div>
+  </div>
 
-<body class="dh-app">
-  <div id="dh-header"></div>
+  <div class="dh-card">
+    <h2 style="margin:0 0 10px;">RSVP</h2>
+    <div class="dh-grid">
+      <label class="dh-label dh-full">Your name <span class="dh-muted">(required)</span>
+        <input id="guestName" class="dh-input" placeholder="e.g., Priya"/></label>
 
-  <main class="container">
-    <div class="breadcrumbs">
-      <a href="/dreamhub/">Home</a> / <a href="/dreamhub/apps.html">Apps</a> / Invitation Maker / RSVP
+      <label class="dh-label dh-full">Are you coming? <span class="dh-muted">(required)</span>
+        <div class="dh-row" style="gap:16px">
+          <label class="dh-row"><input type="radio" name="status" value="YES" checked> Yes</label>
+          <label class="dh-row"><input type="radio" name="status" value="MAYBE"> Maybe</label>
+          <label class="dh-row"><input type="radio" name="status" value="NO"> No</label>
+        </div>
+      </label>
+
+      <label class="dh-label">Adults (13+)
+        <div class="dh-stepper">
+          <button type="button" id="adultsMinus">−</button>
+          <input id="adults" class="dh-input" value="0" inputmode="numeric"/>
+          <button type="button" id="adultsPlus">+</button>
+        </div>
+      </label>
+
+      <label class="dh-label">Kids (0–12)
+        <div class="dh-stepper">
+          <button type="button" id="kidsMinus">−</button>
+          <input id="kids" class="dh-input" value="0" inputmode="numeric"/>
+          <button type="button" id="kidsPlus">+</button>
+        </div>
+      </label>
+
+      <label class="dh-label dh-full">Food preference (optional)
+        <select id="food" class="dh-select">
+          <option value="">No preference</option>
+          <option value="VEG">Vegetarian</option>
+          <option value="NONVEG">Non-veg</option>
+          <option value="VEGAN">Vegan</option>
+        </select>
+      </label>
+
+      <label class="dh-label dh-full">Note (optional)
+        <textarea id="note" class="dh-textarea" rows="3" placeholder="Allergies / questions / anything else…"></textarea>
+      </label>
     </div>
 
-    <div class="viewer">
-      <div class="panel">
-        <div class="panel-head">
-          <strong id="evTitle">Invitation</strong>
-          <span class="muted small">Details</span>
-        </div>
-        <div class="panel-body" id="evDetails">
-          Loading...
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-head">
-          <strong>RSVP</strong>
-          <span class="muted small">Your response</span>
-        </div>
-        <div class="panel-body">
-          <div id="rsvpNotice" class="notice" style="display:none;"></div>
-
-          <label class="small muted">Your Name / Family</label>
-          <input id="guestName" class="input" placeholder="e.g., Chandu Family" />
-
-          <label class="small muted">Response</label>
-          <select id="response" class="input">
-            <option value="yes">Yes, I’m coming</option>
-            <option value="no">No, I can’t</option>
-            <option value="maybe">Maybe</option>
-          </select>
-
-          <label class="small muted">Adults</label>
-          <input id="adults" type="number" class="input" min="0" value="1" />
-
-          <label class="small muted">Kids</label>
-          <input id="kids" type="number" class="input" min="0" value="0" />
-
-          <label class="small muted">Notes (optional)</label>
-          <textarea id="notes" class="input" rows="4" placeholder="Allergies / arrival time / anything..."></textarea>
-
-          <button id="btnSubmit" class="btn">Submit RSVP</button>
-        </div>
-      </div>
+    <div class="dh-row" style="margin-top:12px">
+      <button id="submitBtn" class="dh-btn dh-btn-primary">Submit RSVP</button>
+      <span id="status" class="dh-muted"></span>
     </div>
-  </main>
+  </div>
+</div>
 
+<div id="toast" class="dh-toast"></div>
+
+<script src="./config.js"></script>
+<script src="./invite.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", async () => {
-    window.DH_LAYOUT?.renderHeader?.("dh-header");
+  const $ = (id) => document.getElementById(id);
+  const eventId = window.DH.invite.q("event") || window.DH.invite.q("eventId");
 
-    const eventId = window.DH.inviteApi.q("event");
-    const openToken = window.DH.inviteApi.q("t");
+  function clampInt(v) { return Math.max(0, Math.min(50, parseInt(v,10) || 0)); }
 
-    if (!eventId || !openToken) {
-      document.getElementById("evDetails").innerHTML = `<div class="notice error">Invalid link. Missing event or token.</div>`;
-      return;
-    }
+  function wireStepper(inputId, minusId, plusId) {
+    const input = $(inputId), minus = $(minusId), plus = $(plusId);
+    function set(val){ input.value = String(clampInt(val)); }
+    minus.onclick = () => set(clampInt(input.value) - 1);
+    plus.onclick = () => set(clampInt(input.value) + 1);
+    input.oninput = () => set(input.value);
+    input.onblur = () => set(input.value);
+  }
+  wireStepper("adults","adultsMinus","adultsPlus");
+  wireStepper("kids","kidsMinus","kidsPlus");
 
+  function setStatus(msg, kind) {
+    const el = $("status");
+    el.textContent = msg || "";
+    el.style.color = kind === "bad" ? "#b3261e" : "";
+  }
+
+  async function loadEvent() {
+    const ev = await window.DH.invite.api("getEvent",{eventId});
+    $("title").textContent = ev.title;
+    $("meta").textContent = ev.datetimePretty + (ev.location ? (" • " + ev.location) : "");
+    $("message").textContent = ev.message || "";
+    $("deadlineNote").textContent = ev.deadlinePretty ? ("Please respond by: " + ev.deadlinePretty) : "";
+    if (ev.closed) { $("submitBtn").disabled = true; setStatus("RSVP closed.","bad"); }
+  }
+
+  function selectedStatus() {
+    const el = document.querySelector('input[name="status"]:checked');
+    return el ? el.value : "YES";
+  }
+
+  $("submitBtn").onclick = async () => {
     try {
-      const res = await window.DH.invite.api("public", { eventId, openToken });
-      if (!res.ok) throw new Error(res.error || "Failed to load invite");
-
-      document.title = `RSVP • ${res.event.title}`;
-      document.getElementById("evTitle").textContent = res.event.title;
-
-      const e = res.event;
-      document.getElementById("evDetails").innerHTML = `
-        <div><strong>Host:</strong> ${window.DH.inviteApi.esc(e.hostName)}</div>
-        <div><strong>Date:</strong> ${window.DH.inviteApi.esc(e.date)}</div>
-        <div><strong>Time:</strong> ${window.DH.inviteApi.esc(e.time)}</div>
-        ${e.location ? `<div><strong>Location:</strong> ${window.DH.inviteApi.esc(e.location)}</div>` : ""}
-        ${e.rsvpBy ? `<div><strong>RSVP By:</strong> ${window.DH.inviteApi.esc(e.rsvpBy)}</div>` : ""}
-        ${e.message ? `<div style="margin-top:10px;"><strong>Message:</strong><br/>${window.DH.inviteApi.nl2br(window.DH.inviteApi.esc(e.message))}</div>` : ""}
-      `;
-
-      document.getElementById("btnSubmit").addEventListener("click", async () => {
-        const payload = {
-          eventId,
-          openToken,
-          guestName: document.getElementById("guestName").value.trim(),
-          response: document.getElementById("response").value,
-          adults: Number(document.getElementById("adults").value || 0),
-          kids: Number(document.getElementById("kids").value || 0),
-          notes: document.getElementById("notes").value.trim(),
-        };
-
-        if (!payload.guestName) {
-          showNotice("Please enter your name/family.", true);
-          return;
-        }
-
-        try {
-          const r = await window.DH.invite.api("rsvp", payload);
-          if (!r.ok) throw new Error(r.error || "RSVP failed");
-          showNotice("Thanks! Your RSVP was saved ✅", false);
-        } catch (err) {
-          showNotice(err.message, true);
-        }
-      });
-
-    } catch (err) {
-      document.getElementById("evDetails").innerHTML = `<div class="notice error">${window.DH.inviteApi.esc(err.message)}</div>`;
+      setStatus("Saving…");
+      const payload = {
+        eventId,
+        name: $("guestName").value.trim(),
+        status: selectedStatus(),
+        adults: clampInt($("adults").value),
+        kids: clampInt($("kids").value),
+        food: $("food").value,
+        note: $("note").value.trim()
+      };
+      await window.DH.invite.api("rsvp", payload);
+      window.DH.invite.toast("Saved ✅ Thank you!","ok");
+      setStatus("Saved ✅");
+    } catch (e) {
+      console.error(e);
+      window.DH.invite.toast(e.message || "Failed","bad");
+      setStatus(e.message || "Failed","bad");
     }
+  };
 
-    function showNotice(msg, isErr) {
-      const el = document.getElementById("rsvpNotice");
-      el.style.display = "block";
-      el.className = "notice" + (isErr ? " error" : "");
-      el.textContent = msg;
-    }
-  });
+  if (!eventId) { $("title").textContent="Invalid link"; setStatus("Missing event id.","bad"); }
+  else loadEvent().catch(e => { console.error(e); $("title").textContent=e.message || "Error"; });
 </script>
 
-</body>
-</html>
+</body></html>

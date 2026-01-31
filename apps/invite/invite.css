@@ -1,0 +1,25 @@
+/* DreamHub Invite App styles */
+.dh-wrap{max-width:980px;margin:24px auto;padding:0 14px;}
+.dh-card{background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08);padding:18px;margin:14px 0;}
+.dh-title{font-size:24px;margin:0 0 6px;}
+.dh-sub{opacity:.75;margin:0 0 14px;}
+.dh-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.dh-full{grid-column:1/-1;}
+.dh-label{display:grid;gap:6px;font-size:14px;}
+.dh-input,.dh-textarea,.dh-select{padding:12px;border:1px solid #ddd;border-radius:12px;font:inherit;width:100%;box-sizing:border-box;background:#fff;}
+.dh-textarea{resize:vertical;}
+.dh-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.dh-muted{opacity:.75;}
+.dh-btn{padding:12px 14px;border-radius:12px;border:0;cursor:pointer;font:inherit;}
+.dh-btn-primary{background:#2d6cdf;color:#fff;}
+.dh-btn-ghost{background:#eef3ff;color:#1d3c78;}
+.dh-kv{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0;}
+.dh-pill{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:999px;background:#f5f5f5;}
+.dh-toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);padding:10px 14px;border-radius:999px;background:#111;color:#fff;opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:9999;font-size:14px;}
+.dh-toast.show{opacity:1;}
+.dh-toast.ok{background:#137333;}
+.dh-toast.bad{background:#b3261e;}
+.dh-stepper{display:flex;align-items:center;gap:8px;}
+.dh-stepper button{width:38px;height:38px;border-radius:10px;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:18px;line-height:1;}
+.dh-stepper input{width:72px;text-align:center;}
+@media (max-width:720px){.dh-grid{grid-template-columns:1fr;}}

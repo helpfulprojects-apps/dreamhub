@@ -1,138 +1,116 @@
 <!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Invitation Maker • DreamHub</title>
-      
-        <link rel="stylesheet" href="/dreamhub/assets/css/style.css" />
-      
-        <!-- IMPORTANT: config must load BEFORE layout -->
-        <script defer src="/dreamhub/assets/js/config.js"></script>
-        <script defer src="/dreamhub/assets/js/layout.js"></script>
-      
-        <!-- App scripts (after layout) -->
-        <script defer src="./config.js"></script>
-        <script defer src="./invite.js"></script>
-      </head>
-      
-
-
-<body class="dh-app">
-  <div id="dh-header"></div>
-
-  <main class="container">
-    <div class="breadcrumbs">
-      <a href="/dreamhub/">Home</a> / <a href="/dreamhub/apps.html">Apps</a> / Invitation Maker / Host
+<html><head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="./invite.css">
+<title>DreamHub • Host Dashboard</title>
+</head><body>
+<div class="dh-wrap">
+  <div class="dh-card">
+    <h1 id="title" class="dh-title">Host Dashboard</h1>
+    <div class="dh-muted" id="meta"></div>
+    <p id="message" style="margin-top:10px"></p>
+    <div class="dh-row" style="margin-top:12px">
+      <button id="copyGuest" class="dh-btn dh-btn-ghost">Copy Guest Link</button>
+      <button id="refresh" class="dh-btn dh-btn-ghost">Refresh</button>
+      <span id="status" class="dh-muted"></span>
     </div>
+  </div>
 
-    <div class="viewer">
-      <div class="panel">
-        <div class="panel-head">
-          <strong>Unlock Dashboard</strong>
-          <span class="muted small">PIN or Recovery Code</span>
-        </div>
-        <div class="panel-body">
-          <div id="hostNotice" class="notice" style="display:none;"></div>
-
-          <label class="small muted">Event ID</label>
-          <input id="eventId" class="input" />
-
-          <label class="small muted">Admin PIN (or Recovery Code)</label>
-          <input id="secret" class="input" placeholder="Enter PIN or Recovery Code" />
-
-          <button id="btnLoad" class="btn">Load Dashboard</button>
-
-          <div class="notice" style="margin-top:10px;">
-            <strong>Note:</strong> Keep host link private. Anyone with PIN/Recovery can view responses.
-          </div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-head">
-          <strong id="dashTitle">Dashboard</strong>
-          <span class="muted small">Summary</span>
-        </div>
-        <div class="panel-body" id="dashBody">
-          Enter Event ID + PIN/Recovery to view responses.
-        </div>
-      </div>
+  <div class="dh-card">
+    <h2 style="margin:0 0 10px;">Summary</h2>
+    <div class="dh-kv">
+      <div class="dh-pill">✅ Yes: <b id="yesPeople">0</b></div>
+      <div class="dh-pill">❓ Maybe: <b id="maybePeople">0</b></div>
+      <div class="dh-pill">❌ No: <b id="noCount">0</b></div>
     </div>
-  </main>
+    <div class="dh-muted">Yes/Maybe show total people (adults + kids). No shows response count.</div>
+  </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    window.DH_LAYOUT?.renderHeader?.("dh-header");
-
-    const ev = window.DH.inviteApi.q("event");
-    if (ev) document.getElementById("eventId").value = ev;
-
-    document.getElementById("btnLoad").addEventListener("click", async () => {
-      const eventId = document.getElementById("eventId").value.trim();
-      const secret = document.getElementById("secret").value.trim();
-
-      if (!eventId || !secret) {
-        showNotice("Please enter Event ID and PIN/Recovery Code.", true);
-        return;
-      }
-
-      try {
-        const res = await window.DH.invite.api("dashboard", { eventId, secret });
-        if (!res.ok) throw new Error(res.error || "Failed");
-
-        document.getElementById("dashTitle").textContent = res.event.title + " • Dashboard";
-
-        const s = res.summary;
-        const rows = res.rsvps.map(r => `
-          <tr>
-            <td>${window.DH.inviteApi.esc(r.guestName)}</td>
-            <td>${window.DH.inviteApi.esc(r.response)}</td>
-            <td>${r.adults}</td>
-            <td>${r.kids}</td>
-            <td>${window.DH.inviteApi.esc(r.notes || "")}</td>
-            <td class="muted small">${window.DH.inviteApi.esc(r.updatedAt)}</td>
+  <div class="dh-card">
+    <h2 style="margin:0 0 10px;">RSVP List</h2>
+    <div id="empty" class="dh-muted">No RSVPs yet.</div>
+    <div style="overflow:auto">
+      <table id="tbl" style="width:100%;border-collapse:collapse;display:none;">
+        <thead>
+          <tr style="text-align:left;border-bottom:1px solid #eee;">
+            <th style="padding:10px;">Name</th>
+            <th style="padding:10px;">Status</th>
+            <th style="padding:10px;">Adults</th>
+            <th style="padding:10px;">Kids</th>
+            <th style="padding:10px;">Food</th>
+            <th style="padding:10px;">Note</th>
+            <th style="padding:10px;">Updated</th>
           </tr>
-        `).join("");
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
-        document.getElementById("dashBody").innerHTML = `
-          <div class="notice">
-            <div><strong>Total Responses:</strong> ${s.total}</div>
-            <div><strong>Yes:</strong> ${s.yes} | <strong>No:</strong> ${s.no} | <strong>Maybe:</strong> ${s.maybe}</div>
-            <div><strong>Total Adults:</strong> ${s.totalAdults} | <strong>Total Kids:</strong> ${s.totalKids}</div>
-          </div>
+<div id="toast" class="dh-toast"></div>
 
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Response</th>
-                <th>Adults</th>
-                <th>Kids</th>
-                <th>Notes</th>
-                <th>Updated</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rows || `<tr><td colspan="6" class="muted small">No RSVPs yet.</td></tr>`}
-            </tbody>
-          </table>
-        `;
+<script src="./config.js"></script>
+<script src="./invite.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const eventId = window.DH.invite.q("event") || window.DH.invite.q("eventId");
+  const hostKey = window.DH.invite.q("key") || window.DH.invite.q("hostKey");
 
-        showNotice("Dashboard loaded ✅", false);
-      } catch (e) {
-        showNotice(e.message, true);
-      }
-    });
+  function setStatus(msg, kind) {
+    const el = $("status");
+    el.textContent = msg || "";
+    el.style.color = kind === "bad" ? "#b3261e" : "";
+  }
 
-    function showNotice(msg, isErr) {
-      const el = document.getElementById("hostNotice");
-      el.style.display = "block";
-      el.className = "notice" + (isErr ? " error" : "");
-      el.textContent = msg;
+  async function loadDash() {
+    setStatus("Loading…");
+    const data = await window.DH.invite.api("getDashboard",{eventId, hostKey});
+    $("title").textContent = data.title;
+    $("meta").textContent = data.datetimePretty + (data.location ? (" • " + data.location) : "");
+    $("message").textContent = data.message || "";
+
+    $("yesPeople").textContent = data.summary.yesPeople;
+    $("maybePeople").textContent = data.summary.maybePeople;
+    $("noCount").textContent = data.summary.noCount;
+
+    const list = data.rsvps || [];
+    if (list.length === 0) {
+      $("empty").style.display="block";
+      $("tbl").style.display="none";
+    } else {
+      $("empty").style.display="none";
+      $("tbl").style.display="table";
+      const tbody = $("rows"); tbody.innerHTML="";
+      list.forEach(r => {
+        const tr = document.createElement("tr");
+        tr.style.borderBottom="1px solid #f0f0f0";
+        tr.innerHTML =
+          `<td style="padding:10px;">${r.name}</td>`+
+          `<td style="padding:10px;">${r.status}</td>`+
+          `<td style="padding:10px;">${r.adults}</td>`+
+          `<td style="padding:10px;">${r.kids}</td>`+
+          `<td style="padding:10px;">${r.food || ""}</td>`+
+          `<td style="padding:10px;">${r.note || ""}</td>`+
+          `<td style="padding:10px;">${r.updatedPretty || ""}</td>`;
+        tbody.appendChild(tr);
+      });
     }
-  });
+
+    window.__guestLink = location.origin + (window.DH && window.DH.inviteBase ? window.DH.inviteBase : "/dreamhub/apps/invite") + "/guest.html?event=" + encodeURIComponent(eventId);
+    setStatus("Loaded ✅");
+  }
+
+  $("refresh").onclick = () => loadDash().catch(e => { console.error(e); window.DH.invite.toast(e.message||"Failed","bad"); setStatus(e.message||"Failed","bad"); });
+  $("copyGuest").onclick = async () => {
+    const ok = await window.DH.invite.copyText(window.__guestLink || "");
+    window.DH.invite.toast(ok ? "Guest link copied ✅" : "Copy failed", ok ? "ok" : "bad");
+  };
+
+  if (!eventId || !hostKey) { $("title").textContent="Invalid link"; setStatus("Missing event or key.","bad"); }
+  else loadDash().catch(e => { console.error(e); $("title").textContent=e.message||"Error"; setStatus(e.message||"Error","bad"); });
 </script>
 
-</body>
-</html>
+</body></html>
