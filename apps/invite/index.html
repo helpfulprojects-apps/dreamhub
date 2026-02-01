@@ -1,110 +1,183 @@
 <!doctype html>
-<html><head>
+<html lang="en">
+<head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>DreamHub • Invitation Maker</title>
+
+  <!-- DreamHub global site styling -->
   <link rel="stylesheet" href="../../assets/css/style.css">
+  <!-- Invite app styling -->
   <link rel="stylesheet" href="./invite.css">
-<title>DreamHub • Invitation Maker</title>
-</head><body>
-  <div id="dh-header"></div>
-<div class="dh-wrap">
-  <div class="dh-card">
-    <h1 class="dh-title">Create an Invitation</h1>
-    <p class="dh-sub">Host email is required so you can always access your dashboard link. Share the guest link anywhere.</p>
-    <div class="dh-grid">
-      <label class="dh-label dh-full">Event title <span class="dh-muted">(required)</span>
-        <input id="title" class="dh-input" placeholder="e.g., Celebration Dinner"/></label>
-      <label class="dh-label">Date & time <span class="dh-muted">(required)</span>
-        <input id="dt" class="dh-input" type="datetime-local"/></label>
-      <label class="dh-label">Location
-        <input id="location" class="dh-input" placeholder="e.g., Our Home / Park / Restaurant"/></label>
-      <label class="dh-label dh-full">Message (optional)
-        <textarea id="message" class="dh-textarea" rows="4" placeholder="Add a short note for guests…"></textarea></label>
-      <label class="dh-label">RSVP deadline (optional)
-        <input id="deadline" class="dh-input" type="datetime-local"/></label>
-      <label class="dh-label">Host email <span class="dh-muted">(required)</span>
-        <input id="hostEmail" class="dh-input" placeholder="you@example.com"/>
-        <span class="dh-muted">We’ll email your private dashboard link here.</span></label>
-    </div>
-    <div class="dh-row" style="margin-top:12px">
-      <button id="createBtn" class="dh-btn dh-btn-primary">Create invitation</button>
-      <span id="status" class="dh-muted"></span>
-    </div>
-  </div>
+</head>
 
-  <div id="result" class="dh-card" style="display:none;">
-    <h2 style="margin:0 0 6px;">Invitation created ✅</h2>
-    <div class="dh-muted" id="sentMsg"></div>
+<body>
+  <!-- Simple DreamHub header (so you always have header even if layout.js isn’t used) -->
+  <header class="dh-site-header">
+    <div class="dh-site-header__inner">
+      <a class="dh-brand" href="/dreamhub/">
+        <span class="dh-brand__logo">DreamHub</span>
+      </a>
+      <nav class="dh-site-nav">
+        <a href="/dreamhub/apps.html">Apps</a>
+        <a href="/dreamhub/">Home</a>
+      </nav>
+    </div>
+  </header>
 
-    <div style="margin-top:14px" class="dh-grid">
-      <label class="dh-label dh-full">Guest RSVP link (share this)
-        <input id="guestLink" class="dh-input" readonly /></label>
-      <div class="dh-row">
-        <button id="copyGuest" class="dh-btn dh-btn-ghost">Copy guest link</button>
-        <span class="dh-muted">Share with guests. Anyone with link can RSVP.</span>
+  <main class="dh-wrap">
+    <section class="dh-card">
+      <h1 class="dh-title">Create an Invitation</h1>
+      <p class="dh-sub">
+        Host email is required so you can always access your dashboard link. Share the guest link anywhere.
+      </p>
+
+      <div class="dh-grid">
+        <label class="dh-label dh-full">
+          Event title <span class="dh-muted">(required)</span>
+          <input id="title" class="dh-input" placeholder="e.g., Celebration Dinner">
+        </label>
+
+        <label class="dh-label">
+          Date & time <span class="dh-muted">(required)</span>
+          <input id="dt" class="dh-input" type="datetime-local">
+        </label>
+
+        <label class="dh-label">
+          Location
+          <input id="location" class="dh-input" placeholder="e.g., Our Home / Park / Restaurant">
+        </label>
+
+        <label class="dh-label dh-full">
+          Message (optional)
+          <textarea id="message" class="dh-textarea" rows="4" placeholder="Add a short note for guests..."></textarea>
+        </label>
+
+        <label class="dh-label">
+          RSVP deadline (optional)
+          <input id="deadline" class="dh-input" type="datetime-local">
+        </label>
+
+        <label class="dh-label">
+          Host email <span class="dh-muted">(required)</span>
+          <input id="hostEmail" class="dh-input" placeholder="you@example.com">
+          <div class="dh-muted">We’ll email your private dashboard link here.</div>
+        </label>
       </div>
 
-      <label class="dh-label dh-full">Host dashboard link (private)
-        <input id="hostLink" class="dh-input" readonly /></label>
-      <div class="dh-row">
-        <button id="copyHost" class="dh-btn dh-btn-ghost">Copy host link</button>
-        <span class="dh-muted">Keep private. Also emailed to you.</span>
+      <div class="dh-row" style="margin-top:12px">
+        <button id="createBtn" class="dh-btn dh-btn-primary">Create invitation</button>
+        <span id="status" class="dh-muted"></span>
       </div>
+    </section>
+
+    <section id="result" class="dh-card" style="display:none">
+      <h2 style="margin:0 0 6px">Invitation created ✅</h2>
+
+      <div class="dh-muted" id="sentMsg" style="margin-bottom:12px"></div>
+
+      <div class="dh-grid">
+        <label class="dh-label dh-full">
+          Guest RSVP link (share this)
+          <input id="guestLink" class="dh-input" readonly>
+        </label>
+
+        <div class="dh-row">
+          <button id="copyGuest" class="dh-btn">Copy guest link</button>
+          <span class="dh-muted">Share with guests. Anyone with link can RSVP.</span>
+        </div>
+
+        <label class="dh-label dh-full" style="margin-top:10px">
+          Host dashboard link (private)
+          <input id="hostLink" class="dh-input" readonly>
+        </label>
+
+        <div class="dh-row">
+          <button id="copyHost" class="dh-btn">Copy host link</button>
+          <span class="dh-muted">Keep private. Also emailed to you.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="dh-site-footer">
+    <div class="dh-site-footer__inner">
+      <span class="dh-muted">© DreamHub</span>
     </div>
-  </div>
-</div>
+  </footer>
 
-<div id="toast" class="dh-toast"></div>
+  <!-- IMPORTANT: load config FIRST, then invite.js -->
+  <script src="./config.js"></script>
+  <script src="./invite.js"></script>
 
-<script src="./config.js"></script>
-<script src="./invite.js"></script>
-<script src="../../assets/js/layout.js"></script>
-<script>
-  const $ = (id) => document.getElementById(id);
-  function setStatus(msg, kind) {
-    const el = $("status");
-    el.textContent = msg || "";
-    el.style.color = kind === "bad" ? "#b3261e" : "";
-  }
-  function appBaseUrl() {
-    return location.origin + (window.DH && window.DH.inviteBase ? window.DH.inviteBase : "/dreamhub/apps/invite");
-  }
+  <script>
+    const $ = (id) => document.getElementById(id);
 
-  $("createBtn").onclick = async () => {
-    try {
-      setStatus("Creating…");
+    function setStatus(msg) { $("status").textContent = msg || ""; }
+
+    async function copyText(text) {
+      // best effort clipboard copy with fallback
+      try {
+        await navigator.clipboard.writeText(text);
+        window.DH.invite.toast("Copied!");
+        return;
+      } catch (e) {}
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); window.DH.invite.toast("Copied!"); } catch (e) { window.DH.invite.toast("Copy failed"); }
+      ta.remove();
+    }
+
+    $("copyGuest").addEventListener("click", () => copyText($("guestLink").value));
+    $("copyHost").addEventListener("click", () => copyText($("hostLink").value));
+
+    $("createBtn").addEventListener("click", async () => {
+      $("result").style.display = "none";
+      setStatus("");
+
       const payload = {
         title: $("title").value.trim(),
-        datetimeISO: $("dt").value,
+        dt: $("dt").value,
         location: $("location").value.trim(),
         message: $("message").value.trim(),
-        deadlineISO: $("deadline").value,
+        deadline: $("deadline").value,
         hostEmail: $("hostEmail").value.trim(),
-        appBase: appBaseUrl()
+        // used by Apps Script to build the links:
+        appBase: location.origin + (window.DH.base || "") + "/apps/invite"
       };
-      const res = await window.DH.invite.api("createEvent", payload);
-      $("guestLink").value = res.guestLink;
-      $("hostLink").value = res.hostLink;
-      $("sentMsg").textContent = "We emailed the dashboard link to: " + res.hostEmail;
-      $("result").style.display = "block";
-      window.DH.invite.toast("Invitation created ✅","ok");
-      setStatus("Done ✅");
-    } catch (e) {
-      console.error(e);
-      window.DH.invite.toast(e.message || "Failed","bad");
-      setStatus(e.message || "Failed","bad");
-    }
-  };
 
-  $("copyGuest").onclick = async () => {
-    const ok = await window.DH.invite.copyText($("guestLink").value);
-    window.DH.invite.toast(ok ? "Guest link copied ✅" : "Copy failed", ok ? "ok" : "bad");
-  };
-  $("copyHost").onclick = async () => {
-    const ok = await window.DH.invite.copyText($("hostLink").value);
-    window.DH.invite.toast(ok ? "Host link copied ✅" : "Copy failed", ok ? "ok" : "bad");
-  };
-</script>
-<div id="dh-header"></div>
+      if (!payload.title) return window.DH.invite.toast("Event title is required");
+      if (!payload.dt) return window.DH.invite.toast("Date & time is required");
+      if (!payload.hostEmail) return window.DH.invite.toast("Host email is required");
 
-</body></html>
+      try {
+        setStatus("Creating…");
+        const res = await window.DH.invite.api("createEvent", payload);
+
+        // ✅ FIX: Apps Script returns { ok:true, data:{...} }
+        if (!res || !res.ok) throw new Error(res && res.error ? res.error : "Unknown error");
+        const data = res.data || {};
+
+        $("sentMsg").textContent = "We emailed the dashboard link to: " + (data.emailedTo || payload.hostEmail);
+        $("guestLink").value = data.guestLink || "";
+        $("hostLink").value = data.hostLink || "";
+
+        if (!data.guestLink || !data.hostLink) {
+          // if links are empty, show a useful error instead of “undefined”
+          throw new Error("Backend did not return guestLink/hostLink. Check Apps Script deployment and appBase.");
+        }
+
+        $("result").style.display = "block";
+        window.DH.invite.toast("Invitation created!");
+        setStatus("");
+      } catch (e) {
+        console.error(e);
+        setStatus("");
+        window.DH.invite.toast(String(e.message || e));
+      }
+    });
+  </script>
+</body>
+</html>
