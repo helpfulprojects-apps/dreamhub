@@ -5,17 +5,23 @@
     el.textContent = msg;
     document.body.appendChild(el);
     setTimeout(() => el.classList.add("show"), 10);
-    setTimeout(() => { el.classList.remove("show"); setTimeout(() => el.remove(), 200); }, 2600);
+    setTimeout(() => {
+      el.classList.remove("show");
+      setTimeout(() => el.remove(), 200);
+    }, 2600);
   }
 
   function basePath() {
-    // must be the folder containing the app
-    if (window.DH && window.DH.inviteBase) return window.DH.inviteBase;
-    return location.pathname.replace(/\/(index\.html)?$/, "");
+    // This MUST be a PATH like "/dreamhub/apps/invite"
+    // Prefer explicit config, else derive from current page path
+    const b = window.DH && window.DH.inviteBase;
+    if (typeof b === "string" && b.trim()) return b.trim();
+    return location.pathname.replace(/\/(index\.html)?$/, "").replace(/\/$/, "");
   }
 
   function appBaseAbsolute() {
-    // absolute base needed so Apps Script can build full links
+    // Absolute base so Apps Script can build full links
+    // Example: "https://helpfulprojects-apps.github.io" + "/dreamhub/apps/invite"
     return location.origin + basePath();
   }
 
@@ -25,32 +31,53 @@
       const url = window.DH && window.DH.inviteApi;
 
       if (typeof url !== "string" || !url.startsWith("https://")) {
-        reject(new Error("Missing/invalid window.DH.inviteApi (check apps/invite/config.js)"));
+        reject(
+          new Error(
+            "Missing/invalid window.DH.inviteApi (check apps/invite/config.js)"
+          )
+        );
         return;
       }
 
       const cb = "DH_INVITE_CB_" + Math.random().toString(36).slice(2);
-      window[cb] = (data) => {
-        try { delete window[cb]; } catch {}
-        resolve(data);
-      };
-
       const u = new URL(url);
+
       const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload || {}))))
-        .replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+        .replaceAll("+", "-")
+        .replaceAll("/", "_")
+        .replaceAll("=", "");
 
       u.searchParams.set("action", action);
       u.searchParams.set("payload", b64);
       u.searchParams.set("callback", cb);
 
       const script = document.createElement("script");
-      script.onerror = () => reject(new Error("Network/API error calling Apps Script"));
+
+      const cleanup = () => {
+        try { delete window[cb]; } catch {}
+        try { script.remove(); } catch {}
+      };
+
+      const timer = setTimeout(() => {
+        cleanup();
+        reject(new Error("Timeout calling Apps Script"));
+      }, 20000);
+
+      window[cb] = (data) => {
+        clearTimeout(timer);
+        cleanup();
+        resolve(data);
+      };
+
+      script.onerror = () => {
+        clearTimeout(timer);
+        cleanup();
+        reject(new Error("Network/API error calling Apps Script"));
+      };
+
       script.src = u.toString();
       script.async = true;
       document.head.appendChild(script);
-
-      // safety timeout
-      setTimeout(() => reject(new Error("Timeout calling Apps Script")), 20000);
     });
   }
 
@@ -65,6 +92,11 @@
     }
   }
 
+  function looksLikeEmail(s) {
+    // simple validation
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+  }
+
   async function onCreate() {
     const title = document.getElementById("title").value.trim();
     const dt = document.getElementById("dt").value; // datetime-local -> "YYYY-MM-DDTHH:mm"
@@ -76,6 +108,7 @@
     if (!title) return toast("Event title required", "warn");
     if (!dt) return toast("Date/time required", "warn");
     if (!hostEmail) return toast("Host email required", "warn");
+    if (!looksLikeEmail(hostEmail)) return toast("Enter a valid host email", "warn");
 
     const status = document.getElementById("status");
     const btn = document.getElementById("createBtn");
@@ -84,6 +117,11 @@
     status.textContent = "Creating…";
 
     try {
+      const inviteBase = basePath();          // "/dreamhub/apps/invite"
+      const appBase = appBaseAbsolute();      // "https://.../dreamhub/apps/invite"
+
+      // IMPORTANT:
+      // Your Apps Script expects inviteBase in payload (you saw "Missing inviteBase in payload")
       const payload = {
         title,
         datetimeISO: dt,
@@ -91,7 +129,10 @@
         message,
         deadlineISO: deadline || "",
         hostEmail,
-        appBase: appBaseAbsolute() // ✅ THIS FIXES “undefined” LINKS
+
+        // REQUIRED fields for backend link generation + routing
+        inviteBase,   // ✅ fixes "Missing inviteBase in payload"
+        appBase       // ✅ helps backend build full URLs
       };
 
       const res = await api("createEvent", payload);
@@ -102,7 +143,9 @@
 
       const data = res.data || {};
       if (!data.guestLink || !data.hostLink) {
-        throw new Error("Server did not return guestLink/hostLink (check Apps Script appBase + deployment access)");
+        throw new Error(
+          "Server did not return guestLink/hostLink. Check Apps Script: appBase/inviteBase and deployment permissions."
+        );
       }
 
       document.getElementById("result").style.display = "";
@@ -136,5 +179,5 @@
 
   // export (optional debugging)
   window.DH = window.DH || {};
-  window.DH.invite = { api, toast, appBaseAbsolute };
+  window.DH.invite = { api, toast, appBaseAbsolute, basePath };
 })();
