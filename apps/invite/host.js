@@ -52,11 +52,9 @@
     }
   
     function getQs(name) {
-      const qs = new URLSearchParams(location.search);
-      const eventId = qs.get("eventId") || qs.get("eventid") || "";
-      const hostKey = qs.get("k") || "";
-      return qs.get(name) || qs.get(name.toLowerCase()) || qs.get(name.toUpperCase()) || "";
-    }
+        const qs = new URLSearchParams(location.search);
+        return qs.get(name) || qs.get(name.toLowerCase()) || qs.get(name.toUpperCase()) || "";
+      }
   
     function renderSummary(rows) {
       let yesPeople = 0, maybePeople = 0, noCount = 0;
@@ -105,17 +103,24 @@
     }
   
     async function refresh(eventId, k) {
-      try {
-        const res = await api("listRsvps", { eventId, k });
-        if (!res || res.ok !== true) throw new Error(res?.error || "Failed to load RSVPs");
-        const rows = res.rsvps || [];
-        renderSummary(rows);
-        renderList(rows);
-      } catch (e) {
-        console.error(e);
-        toast(e.message || String(e), "err");
+        try {
+          $("status").textContent = "Loading…";
+          const res = await api("listRsvps", { eventId, k });
+      
+          if (!res || res.ok !== true) throw new Error(res?.error || "Failed to load RSVPs");
+          const rows = res.rsvps || [];
+      
+          renderSummary(rows);
+          renderList(rows);
+      
+          $("status").textContent = "Loaded ✅";
+        } catch (e) {
+          console.error(e);
+          toast(e.message || String(e), "err");
+          $("status").textContent = e.message || "Failed";
+        }
       }
-    }
+      
   
     window.addEventListener("DOMContentLoaded", () => {
       const eventId = getQs("eventId") || getQs("eventid");
