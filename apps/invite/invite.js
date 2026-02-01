@@ -1,7 +1,5 @@
+// apps/invite/invite.js
 (function () {
-  // ---------------------------
-  // Small UI helpers
-  // ---------------------------
   function toast(msg, type = "info") {
     const el = document.createElement("div");
     el.className = "dh-toast dh-toast-" + type;
@@ -15,22 +13,20 @@
   }
 
   function basePath() {
-    // Prefer explicit config (best)
+    // Prefer config.js value so links are correct even if user opens /index.html etc.
     if (window.DH && typeof window.DH.inviteBase === "string" && window.DH.inviteBase.trim()) {
-      return window.DH.inviteBase.trim().replace(/\/$/, "");
+      return window.DH.inviteBase.trim();
     }
-    // Fallback: current folder
-    return location.pathname.replace(/\/(index\.html)?$/, "").replace(/\/$/, "");
+    // Fallback: folder of current page
+    return location.pathname.replace(/\/(index\.html)?$/, "");
   }
 
-  function appBaseAbsolute() {
-    // Absolute URL used by Apps Script to build full guest/host links
+  function inviteBaseAbsolute() {
+    // Absolute base needed so Apps Script can build full links with https://host/...
     return location.origin + basePath();
   }
 
-  // ---------------------------
-  // JSONP call to Apps Script
-  // ---------------------------
+  // JSONP call (script tag)
   function api(action, payload) {
     return new Promise((resolve, reject) => {
       const url = window.DH && window.DH.inviteApi;
@@ -40,96 +36,62 @@
         return;
       }
 
-      const cbName = "DH_INVITE_CB_" + Math.random().toString(36).slice(2);
-      const u = new URL(url);
-
-      const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload || {}))))
-        .replaceAll("+", "-")
-        .replaceAll("/", "_")
-        .replaceAll("=", "");
-
-      u.searchParams.set("action", action);
-      u.searchParams.set("payload", b64);
-      u.searchParams.set("callback", cbName);
-
-      const script = document.createElement("script");
-
+      const cb = "DH_INVITE_CB_" + Math.random().toString(36).slice(2);
       let done = false;
+
       const cleanup = () => {
-        try { delete window[cbName]; } catch {}
+        if (done) return;
+        done = true;
+        try { delete window[cb]; } catch {}
         try { script.remove(); } catch {}
       };
 
-      const t = setTimeout(() => {
-        if (done) return;
-        done = true;
-        cleanup();
-        reject(new Error("Timeout calling Apps Script"));
-      }, 20000);
-
-      window[cbName] = (data) => {
-        if (done) return;
-        done = true;
-        clearTimeout(t);
+      window[cb] = (data) => {
         cleanup();
         resolve(data);
       };
 
+      const u = new URL(url);
+      const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload || {}))))
+        .replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+
+      u.searchParams.set("action", action);
+      u.searchParams.set("payload", b64);
+      u.searchParams.set("callback", cb);
+
+      const script = document.createElement("script");
       script.onerror = () => {
-        if (done) return;
-        done = true;
-        clearTimeout(t);
         cleanup();
         reject(new Error("Network/API error calling Apps Script"));
       };
-
       script.src = u.toString();
       script.async = true;
       document.head.appendChild(script);
+
+      // safety timeout
+      setTimeout(() => {
+        if (!done) {
+          cleanup();
+          reject(new Error("Timeout calling Apps Script"));
+        }
+      }, 20000);
     });
   }
 
   async function copyToClipboard(text, msgEl) {
     try {
       await navigator.clipboard.writeText(text);
-      if (msgEl) {
-        msgEl.textContent = "Copied ✅";
-        setTimeout(() => (msgEl.textContent = ""), 1500);
-      } else {
-        toast("Copied ✅", "ok");
-      }
+      msgEl.textContent = "Copied ✅";
+      setTimeout(() => (msgEl.textContent = ""), 1500);
     } catch {
-      if (msgEl) {
-        msgEl.textContent = "Copy failed (browser blocked)";
-        setTimeout(() => (msgEl.textContent = ""), 2500);
-      } else {
-        toast("Copy failed (browser blocked)", "err");
-      }
+      msgEl.textContent = "Copy failed (browser blocked)";
+      setTimeout(() => (msgEl.textContent = ""), 2500);
     }
-  }
-
-  function normalizeLinksFromResponse(res, fallbackHostEmail) {
-    // Your Apps Script might return different shapes:
-    // 1) { ok:true, data:{ guestLink, hostLink } }
-    // 2) { ok:true, data:{ guestUrl, hostUrl } }
-    // 3) { ok:true, guestLink, hostLink }  (no data wrapper)
-    const data = (res && res.data) ? res.data : res;
-
-    const guestLink =
-      data?.guestLink || data?.guestURL || data?.guestUrl || data?.guestURLLink || "";
-
-    const hostLink =
-      data?.hostLink || data?.hostURL || data?.hostUrl || data?.hostURLLink || "";
-
-    const emailedTo =
-      data?.emailedTo || data?.email || data?.hostEmail || fallbackHostEmail || "";
-
-    return { guestLink, hostLink, emailedTo };
   }
 
   async function onCreate() {
     const title = document.getElementById("title").value.trim();
-    const dt = document.getElementById("dt").value;
+    const dt = document.getElementById("dt").value; // datetime-local -> "YYYY-MM-DDTHH:mm"
     const locationText = document.getElementById("location").value.trim();
     const message = document.getElementById("message").value.trim();
     const deadline = document.getElementById("deadline").value;
@@ -146,21 +108,20 @@
     status.textContent = "Creating…";
 
     try {
-      // IMPORTANT: send BOTH appBase (absolute) and inviteBase (path)
-      // so Apps Script can build links reliably.
       const payload = {
         title,
-        datetimeISO: dt,
+        // IMPORTANT: match Apps Script keys exactly:
+        eventDateTime: dt,
         location: locationText,
         message,
-        deadlineISO: deadline || "",
+        rsvpDeadline: deadline || "",
         hostEmail,
 
-        // absolute base for full URLs:
-        appBase: appBaseAbsolute(),
+        // IMPORTANT: Apps Script expects inviteBase
+        inviteBase: inviteBaseAbsolute(),
 
-        // path base (some server versions expect this name):
-        inviteBase: basePath()
+        // Backward compatibility (safe to keep)
+        appBase: inviteBaseAbsolute(),
       };
 
       const res = await api("createEvent", payload);
@@ -169,37 +130,27 @@
         throw new Error((res && res.error) ? res.error : "Unknown server error");
       }
 
-      const { guestLink, hostLink, emailedTo } = normalizeLinksFromResponse(res, hostEmail);
+      // Your Apps Script returns guestLink/hostLink at top-level (not res.data)
+      const guestLink = res.guestLink || (res.data && res.data.guestLink) || "";
+      const hostLink  = res.hostLink  || (res.data && res.data.hostLink)  || "";
+      const emailedTo = res.hostEmail || (res.data && res.data.emailedTo) || hostEmail;
 
-      // If server returned relative links, make them absolute
-      const fixLink = (link) => {
-        if (!link) return "";
-        if (link.startsWith("http://") || link.startsWith("https://")) return link;
-        if (link.startsWith("/")) return location.origin + link;
-        // relative like "guest.html?..."
-        return appBaseAbsolute().replace(/\/$/, "") + "/" + link.replace(/^\//, "");
-      };
-
-      const guest = fixLink(guestLink);
-      const host = fixLink(hostLink);
-
-      if (!guest || !host) {
-        console.log("Full response from Apps Script:", res);
-        throw new Error("Server did not return guest/host links. Check Apps Script response fields.");
+      if (!guestLink || !hostLink) {
+        throw new Error("Server did not return guestLink/hostLink. Check Apps Script createEvent_ return values.");
       }
 
       document.getElementById("result").style.display = "";
       document.getElementById("sentMsg").textContent =
-        "Dashboard link emailed to: " + (emailedTo || hostEmail);
+        "Dashboard link emailed to: " + emailedTo;
 
-      document.getElementById("guestLink").value = guest;
-      document.getElementById("hostLink").value = host;
+      document.getElementById("guestLink").value = guestLink;
+      document.getElementById("hostLink").value = hostLink;
 
       document.getElementById("copyGuest").onclick = () =>
-        copyToClipboard(guest, document.getElementById("copyGuestMsg"));
+        copyToClipboard(guestLink, document.getElementById("copyGuestMsg"));
 
       document.getElementById("copyHost").onclick = () =>
-        copyToClipboard(host, document.getElementById("copyHostMsg"));
+        copyToClipboard(hostLink, document.getElementById("copyHostMsg"));
 
       toast("Invitation created!", "ok");
     } catch (e) {
@@ -211,13 +162,12 @@
     }
   }
 
-  // Wire up
   window.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("createBtn");
     if (btn) btn.addEventListener("click", onCreate);
   });
 
-  // Export for debugging
+  // export (optional debugging)
   window.DH = window.DH || {};
-  window.DH.invite = { api, toast, basePath, appBaseAbsolute };
+  window.DH.invite = { api, toast, inviteBaseAbsolute };
 })();
