@@ -53,6 +53,8 @@
   
     function getQs(name) {
       const qs = new URLSearchParams(location.search);
+      const eventId = qs.get("eventId") || qs.get("eventid") || "";
+      const hostKey = qs.get("k") || "";
       return qs.get(name) || qs.get(name.toLowerCase()) || qs.get(name.toUpperCase()) || "";
     }
   
