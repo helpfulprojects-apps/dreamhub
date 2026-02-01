@@ -23,3 +23,48 @@
 .dh-stepper button{width:38px;height:38px;border-radius:10px;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:18px;line-height:1;}
 .dh-stepper input{width:72px;text-align:center;}
 @media (max-width:720px){.dh-grid{grid-template-columns:1fr;}}
+/* ===== DreamHub simple header/footer for Invite pages ===== */
+
+.dh-topbar{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+  }
+  
+  .dh-topbar-inner{
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .dh-brand{
+    font-weight: 700;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .dh-topbar-links a{
+    text-decoration: none;
+    color: inherit;
+    opacity: .75;
+    margin-left: 14px;
+  }
+  
+  .dh-topbar-links a:hover{
+    opacity: 1;
+    text-decoration: underline;
+  }
+  
+  .dh-footer{
+    max-width: 980px;
+    margin: 22px auto 28px;
+    padding: 0 14px;
+    text-align: center;
+  }
+  
