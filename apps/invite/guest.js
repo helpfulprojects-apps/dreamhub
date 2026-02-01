@@ -11,46 +11,6 @@
       setTimeout(() => { el.classList.remove("show"); setTimeout(() => el.remove(), 200); }, 2600);
     }
   
-    function api(action, payload) {
-      return new Promise((resolve, reject) => {
-        const url = window.DH && window.DH.inviteApi;
-        if (typeof url !== "string" || !url.startsWith("https://")) {
-          reject(new Error("Missing/invalid window.DH.inviteApi (check apps/invite/config.js)"));
-          return;
-        }
-  
-        const cb = "DH_GUEST_CB_" + Math.random().toString(36).slice(2);
-        let done = false;
-  
-        const cleanup = () => {
-          if (done) return;
-          done = true;
-          try { delete window[cb]; } catch {}
-          try { script.remove(); } catch {}
-        };
-  
-        window[cb] = (data) => { cleanup(); resolve(data); };
-  
-        const u = new URL(url);
-        const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload || {}))))
-          .replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
-  
-        u.searchParams.set("action", action);
-        u.searchParams.set("payload", b64);
-        u.searchParams.set("callback", cb);
-  
-        const script = document.createElement("script");
-        script.onerror = () => { cleanup(); reject(new Error("Network/API error calling Apps Script")); };
-        script.src = u.toString();
-        script.async = true;
-        document.head.appendChild(script);
-  
-        setTimeout(() => {
-          if (!done) { cleanup(); reject(new Error("Timeout calling Apps Script")); }
-        }, 20000);
-      });
-    }
-  
     function clampNonNeg(n) {
       n = Number(n);
       if (!Number.isFinite(n) || n < 0) return 0;
@@ -62,52 +22,82 @@
       const plus = $(plusId);
       const value = $(valueId);
   
-      const get = () => clampNonNeg(value.value || value.textContent || 0);
-      const set = (n) => {
-        n = clampNonNeg(n);
-        if ("value" in value) value.value = String(n);
-        else value.textContent = String(n);
-      };
+      const get = () => clampNonNeg(value.value || 0);
+      const set = (n) => { value.value = String(clampNonNeg(n)); };
   
       minus.addEventListener("click", () => set(get() - 1));
       plus.addEventListener("click", () => set(get() + 1));
-  
-      // if user types manually, keep non-negative
-      if ("value" in value) {
-        value.addEventListener("input", () => set(get()));
-      }
+      value.addEventListener("input", () => set(get()));
     }
   
     function getEventIdFromUrl() {
       const qs = new URLSearchParams(location.search);
-      return qs.get("eventId") || qs.get("eventid") || "";
+      // support a few variants just in case
+      return qs.get("eventId") || qs.get("eventid") || qs.get("event") || "";
+    }
+  
+    function selectedStatus() {
+      return document.querySelector("input[name='status']:checked")?.value || "";
     }
   
     async function loadEvent(eventId) {
-      const res = await api("getEvent", { eventId });
-      if (!res || res.ok !== true) throw new Error(res && res.error ? res.error : "Failed to load event");
-      return res.event;
+      // Use the shared invite.js JSONP API
+      const res = await window.DH.invite.api("getEvent", { eventId });
+  
+      if (!res || res.ok !== true) {
+        throw new Error(res && res.error ? res.error : "Failed to load event");
+      }
+  
+      // Support either res.event or res.data (depending on your Apps Script shape)
+      const ev = res.event || res.data || res;
+  
+      // Populate header
+      if ($("title")) $("title").textContent = ev.title || "Event";
+      if ($("meta")) {
+        const parts = [];
+        if (ev.eventDateTime) parts.push(ev.eventDateTime);
+        if (ev.location) parts.push(ev.location);
+        $("meta").textContent = parts.join(" • ");
+      }
+      if ($("message")) $("message").textContent = ev.message || "";
+  
+      // Optional deadline note (support multiple possible field names)
+      const deadline = ev.rsvpDeadline || ev.rsvpDeadlinePretty || ev.deadlinePretty || "";
+      if ($("deadlineNote")) {
+        $("deadlineNote").textContent = deadline ? ("Please respond by: " + deadline) : "";
+      }
+  
+      // Optional: close RSVP if backend says so
+      if (ev.closed === true) {
+        $("submitBtn").disabled = true;
+        $("status").textContent = "RSVP closed.";
+      }
     }
   
     async function onSubmit(eventId) {
       const guestName = $("guestName").value.trim();
-      const guestEmail = ($("guestEmail") ? $("guestEmail").value.trim() : "");
-      const status = document.querySelector("input[name='status']:checked")?.value || "";
+      const statusVal = selectedStatus();
       const adults = clampNonNeg($("adults").value);
       const kids = clampNonNeg($("kids").value);
-      const food = ($("food") ? $("food").value : "");
-      const note = ($("note") ? $("note").value.trim() : "");
+      const food = $("food") ? $("food").value : "";
+      const note = $("note") ? $("note").value.trim() : "";
   
       if (!guestName) return toast("Your name is required", "warn");
-      if (!status) return toast("Please select Yes/Maybe/No", "warn");
+      if (!statusVal) return toast("Please select Yes/Maybe/No", "warn");
   
       const btn = $("submitBtn");
       btn.disabled = true;
-      btn.textContent = "Submitting…";
+      $("status").textContent = "Saving…";
   
       try {
-        const res = await api("submitRsvp", {
-          eventId, guestName, guestEmail, status, adults, kids, food, note
+        const res = await window.DH.invite.api("submitRsvp", {
+          eventId,
+          guestName,
+          status: statusVal,
+          adults,
+          kids,
+          food,
+          note
         });
   
         if (!res || res.ok !== true) {
@@ -115,45 +105,48 @@
         }
   
         toast("RSVP saved ✅", "ok");
-        btn.textContent = "Submitted ✅";
-        setTimeout(() => { btn.textContent = "Submit RSVP"; btn.disabled = false; }, 1500);
+        $("status").textContent = "Saved ✅";
       } catch (e) {
         console.error(e);
         toast(e.message || String(e), "err");
+        $("status").textContent = e.message || "Failed";
+      } finally {
         btn.disabled = false;
-        btn.textContent = "Submit RSVP";
       }
     }
   
     window.addEventListener("DOMContentLoaded", async () => {
-      const eventId = getEventIdFromUrl();
-      if (!eventId) {
-        toast("Missing eventId in URL", "err");
+      // If invite.js didn’t load, stop immediately (helps debugging)
+      if (!window.DH || !window.DH.invite || typeof window.DH.invite.api !== "function") {
+        console.error("invite.js not loaded or window.DH.invite.api missing");
+        toast("Internal error: invite.js not loaded", "err");
         return;
       }
   
-      // steppers (IDs must match your guest.html)
+      const eventId = getEventIdFromUrl();
+      if (!eventId) {
+        $("title").textContent = "Invalid link";
+        $("status").textContent = "Missing event id.";
+        return;
+      }
+  
+      // steppers
       wireStepper("adultsMinus", "adults", "adultsPlus");
       wireStepper("kidsMinus", "kids", "kidsPlus");
   
-      // Load event -> remove Loading...
       try {
-        const ev = await loadEvent(eventId);
-        if ($("loading")) $("loading").style.display = "none";
-        if ($("eventTitle")) $("eventTitle").textContent = ev.title || "Event";
-        if ($("eventMeta")) $("eventMeta").textContent =
-          [ev.eventDateTime, ev.location].filter(Boolean).join(" • ");
-        if ($("eventMessage")) $("eventMessage").textContent = ev.message || "";
+        await loadEvent(eventId);
       } catch (e) {
         console.error(e);
-        toast(e.message || String(e), "err");
+        $("title").textContent = e.message || "Error";
         return;
       }
   
       $("submitBtn").addEventListener("click", () => onSubmit(eventId));
     });
   
+    // export for debugging
     window.DH = window.DH || {};
-    window.DH.guest = { api };
+    window.DH.guest = { toast };
   })();
   

@@ -1,141 +1,79 @@
 <!doctype html>
-<html><head>
+<html>
+<head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>DreamHub • RSVP</title>
+
   <link rel="stylesheet" href="/dreamhub/assets/css/style.css" />
-      
-  <script src="./config.js"></script>
-  <script src="./invite.js"></script>   <!-- defines window.DH.invite.q -->
-  <script src="./guest.js"></script>
-  
-
   <link rel="stylesheet" href="./invite.css">
-<title>DreamHub • RSVP</title>
-</head><body>
-<div class="dh-wrap">
-  <div class="dh-card">
-    <h1 id="title" class="dh-title">Loading…</h1>
-    <div class="dh-muted" id="meta"></div>
-    <p id="message" style="margin-top:10px"></p>
-    <div class="dh-muted" id="deadlineNote" style="margin-top:8px"></div>
-  </div>
 
-  <div class="dh-card">
-    <h2 style="margin:0 0 10px;">RSVP</h2>
-    <div class="dh-grid">
-      <label class="dh-label dh-full">Your name <span class="dh-muted">(required)</span>
-        <input id="guestName" class="dh-input" placeholder="e.g., Priya"/></label>
+  <!-- Load config + shared invite utilities + guest page logic -->
+  <script src="./config.js"></script>
+  <script src="./invite.js"></script>
+  <script src="./guest.js"></script>
+</head>
 
-      <label class="dh-label dh-full">Are you coming? <span class="dh-muted">(required)</span>
-        <div class="dh-row" style="gap:16px">
-          <label class="dh-row"><input type="radio" name="status" value="YES" checked> Yes</label>
-          <label class="dh-row"><input type="radio" name="status" value="MAYBE"> Maybe</label>
-          <label class="dh-row"><input type="radio" name="status" value="NO"> No</label>
-        </div>
-      </label>
-
-      <label class="dh-label">Adults (13+)
-        <div class="dh-stepper">
-          <button type="button" id="adultsMinus">−</button>
-          <input id="adults" class="dh-input" value="0" inputmode="numeric"/>
-          <button type="button" id="adultsPlus">+</button>
-        </div>
-      </label>
-
-      <label class="dh-label">Kids (0–12)
-        <div class="dh-stepper">
-          <button type="button" id="kidsMinus">−</button>
-          <input id="kids" class="dh-input" value="0" inputmode="numeric"/>
-          <button type="button" id="kidsPlus">+</button>
-        </div>
-      </label>
-
-      <label class="dh-label dh-full">Food preference (optional)
-        <select id="food" class="dh-select">
-          <option value="">No preference</option>
-          <option value="VEG">Vegetarian</option>
-          <option value="NONVEG">Non-veg</option>
-          <option value="VEGAN">Vegan</option>
-        </select>
-      </label>
-
-      <label class="dh-label dh-full">Note (optional)
-        <textarea id="note" class="dh-textarea" rows="3" placeholder="Allergies / questions / anything else…"></textarea>
-      </label>
+<body>
+  <div class="dh-wrap">
+    <div class="dh-card">
+      <h1 id="title" class="dh-title">Loading…</h1>
+      <div class="dh-muted" id="meta"></div>
+      <p id="message" style="margin-top:10px"></p>
+      <div class="dh-muted" id="deadlineNote" style="margin-top:8px"></div>
     </div>
 
-    <div class="dh-row" style="margin-top:12px">
-      <button id="submitBtn" class="dh-btn dh-btn-primary">Submit RSVP</button>
-      <span id="status" class="dh-muted"></span>
+    <div class="dh-card">
+      <h2 style="margin:0 0 10px;">RSVP</h2>
+
+      <div class="dh-grid">
+        <label class="dh-label dh-full">Your name <span class="dh-muted">(required)</span>
+          <input id="guestName" class="dh-input" placeholder="e.g., Priya"/>
+        </label>
+
+        <label class="dh-label dh-full">Are you coming? <span class="dh-muted">(required)</span>
+          <div class="dh-row" style="gap:16px">
+            <label class="dh-row"><input type="radio" name="status" value="YES" checked> Yes</label>
+            <label class="dh-row"><input type="radio" name="status" value="MAYBE"> Maybe</label>
+            <label class="dh-row"><input type="radio" name="status" value="NO"> No</label>
+          </div>
+        </label>
+
+        <label class="dh-label">Adults (13+)
+          <div class="dh-stepper">
+            <button type="button" id="adultsMinus">−</button>
+            <input id="adults" class="dh-input" value="0" inputmode="numeric"/>
+            <button type="button" id="adultsPlus">+</button>
+          </div>
+        </label>
+
+        <label class="dh-label">Kids (0–12)
+          <div class="dh-stepper">
+            <button type="button" id="kidsMinus">−</button>
+            <input id="kids" class="dh-input" value="0" inputmode="numeric"/>
+            <button type="button" id="kidsPlus">+</button>
+          </div>
+        </label>
+
+        <label class="dh-label dh-full">Food preference (optional)
+          <select id="food" class="dh-select">
+            <option value="">No preference</option>
+            <option value="VEG">Vegetarian</option>
+            <option value="NONVEG">Non-veg</option>
+            <option value="VEGAN">Vegan</option>
+          </select>
+        </label>
+
+        <label class="dh-label dh-full">Note (optional)
+          <textarea id="note" class="dh-textarea" rows="3" placeholder="Allergies / questions / anything else…"></textarea>
+        </label>
+      </div>
+
+      <div class="dh-row" style="margin-top:12px">
+        <button id="submitBtn" class="dh-btn dh-btn-primary">Submit RSVP</button>
+        <span id="status" class="dh-muted"></span>
+      </div>
     </div>
   </div>
-</div>
-
-<div id="toast" class="dh-toast"></div>
-
-<script src="./config.js"></script>
-<script src="./invite.js"></script>
-<script>
-  const $ = (id) => document.getElementById(id);
-  const eventId = window.DH.invite.q("event") || window.DH.invite.q("eventId");
-
-  function clampInt(v) { return Math.max(0, Math.min(50, parseInt(v,10) || 0)); }
-
-  function wireStepper(inputId, minusId, plusId) {
-    const input = $(inputId), minus = $(minusId), plus = $(plusId);
-    function set(val){ input.value = String(clampInt(val)); }
-    minus.onclick = () => set(clampInt(input.value) - 1);
-    plus.onclick = () => set(clampInt(input.value) + 1);
-    input.oninput = () => set(input.value);
-    input.onblur = () => set(input.value);
-  }
-  wireStepper("adults","adultsMinus","adultsPlus");
-  wireStepper("kids","kidsMinus","kidsPlus");
-
-  function setStatus(msg, kind) {
-    const el = $("status");
-    el.textContent = msg || "";
-    el.style.color = kind === "bad" ? "#b3261e" : "";
-  }
-
-  async function loadEvent() {
-    const ev = await window.DH.invite.api("getEvent",{eventId});
-    $("title").textContent = ev.title;
-    $("meta").textContent = ev.datetimePretty + (ev.location ? (" • " + ev.location) : "");
-    $("message").textContent = ev.message || "";
-    $("deadlineNote").textContent = ev.deadlinePretty ? ("Please respond by: " + ev.deadlinePretty) : "";
-    if (ev.closed) { $("submitBtn").disabled = true; setStatus("RSVP closed.","bad"); }
-  }
-
-  function selectedStatus() {
-    const el = document.querySelector('input[name="status"]:checked');
-    return el ? el.value : "YES";
-  }
-
-  $("submitBtn").onclick = async () => {
-    try {
-      setStatus("Saving…");
-      const payload = {
-        eventId,
-        name: $("guestName").value.trim(),
-        status: selectedStatus(),
-        adults: clampInt($("adults").value),
-        kids: clampInt($("kids").value),
-        food: $("food").value,
-        note: $("note").value.trim()
-      };
-      await window.DH.invite.api("rsvp", payload);
-      window.DH.invite.toast("Saved ✅ Thank you!","ok");
-      setStatus("Saved ✅");
-    } catch (e) {
-      console.error(e);
-      window.DH.invite.toast(e.message || "Failed","bad");
-      setStatus(e.message || "Failed","bad");
-    }
-  };
-
-  if (!eventId) { $("title").textContent="Invalid link"; setStatus("Missing event id.","bad"); }
-  else loadEvent().catch(e => { console.error(e); $("title").textContent=e.message || "Error"; });
-</script>
-
-</body></html>
+</body>
+</html>
