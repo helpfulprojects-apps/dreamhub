@@ -1,4 +1,3 @@
-// apps/invite/invite.js
 (function () {
   function toast(msg, type = "info") {
     const el = document.createElement("div");
@@ -13,21 +12,23 @@
   }
 
   function basePath() {
-    // Prefer config.js value so links are correct even if user opens /index.html etc.
+    // MUST be the folder path where this app lives (no trailing slash)
+    // Prefer config.js override:
     if (window.DH && typeof window.DH.inviteBase === "string" && window.DH.inviteBase.trim()) {
-      return window.DH.inviteBase.trim();
+      return window.DH.inviteBase.replace(/\/+$/, "");
     }
-    // Fallback: folder of current page
-    return location.pathname.replace(/\/(index\.html)?$/, "");
+    // Fallback: derive from current URL path
+    return location.pathname.replace(/\/(index\.html)?$/, "").replace(/\/+$/, "");
   }
 
   function inviteBaseAbsolute() {
-    // Absolute base needed so Apps Script can build full links with https://host/...
-    return location.origin + basePath();
+    // Absolute base needed so Apps Script can generate full links
+    // Example: https://helpfulprojects-apps.github.io/dreamhub/apps/invite
+    return (location.origin + basePath()).replace(/\/+$/, "");
   }
 
   // JSONP call (script tag)
-  function api(action, payload) {
+  function api(action, payloadObj) {
     return new Promise((resolve, reject) => {
       const url = window.DH && window.DH.inviteApi;
 
@@ -37,23 +38,26 @@
       }
 
       const cb = "DH_INVITE_CB_" + Math.random().toString(36).slice(2);
-      let done = false;
+      let finished = false;
 
-      const cleanup = () => {
-        if (done) return;
-        done = true;
+      const cleanup = (scriptEl) => {
         try { delete window[cb]; } catch {}
-        try { script.remove(); } catch {}
+        if (scriptEl && scriptEl.parentNode) scriptEl.parentNode.removeChild(scriptEl);
       };
 
       window[cb] = (data) => {
-        cleanup();
+        if (finished) return;
+        finished = true;
+        cleanup(script);
         resolve(data);
       };
 
       const u = new URL(url);
-      const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload || {}))))
-        .replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+
+      const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payloadObj || {}))))
+        .replaceAll("+", "-")
+        .replaceAll("/", "_")
+        .replaceAll("=", "");
 
       u.searchParams.set("action", action);
       u.searchParams.set("payload", b64);
@@ -61,7 +65,9 @@
 
       const script = document.createElement("script");
       script.onerror = () => {
-        cleanup();
+        if (finished) return;
+        finished = true;
+        cleanup(script);
         reject(new Error("Network/API error calling Apps Script"));
       };
       script.src = u.toString();
@@ -70,10 +76,10 @@
 
       // safety timeout
       setTimeout(() => {
-        if (!done) {
-          cleanup();
-          reject(new Error("Timeout calling Apps Script"));
-        }
+        if (finished) return;
+        finished = true;
+        cleanup(script);
+        reject(new Error("Timeout calling Apps Script"));
       }, 20000);
     });
   }
@@ -87,6 +93,15 @@
       msgEl.textContent = "Copy failed (browser blocked)";
       setTimeout(() => (msgEl.textContent = ""), 2500);
     }
+  }
+
+  function normalizeLink(x) {
+    const s = String(x || "").trim();
+    if (!s) return "";
+    // If something accidentally became "https://ahttps://a/...", fix by taking the LAST https:// occurrence
+    const last = s.lastIndexOf("https://");
+    if (last > 0) return s.slice(last);
+    return s;
   }
 
   async function onCreate() {
@@ -110,18 +125,15 @@
     try {
       const payload = {
         title,
-        // IMPORTANT: match Apps Script keys exactly:
-        eventDateTime: dt,
+        eventDateTime: dt,          // match your Apps Script field name
         location: locationText,
         message,
         rsvpDeadline: deadline || "",
         hostEmail,
 
-        // IMPORTANT: Apps Script expects inviteBase
-        inviteBase: inviteBaseAbsolute(),
-
-        // Backward compatibility (safe to keep)
-        appBase: inviteBaseAbsolute(),
+        // IMPORTANT: Apps Script expects inviteBase in payload
+        // and it should be ABSOLUTE (full URL), not just "/dreamhub/..."
+        inviteBase: inviteBaseAbsolute()
       };
 
       const res = await api("createEvent", payload);
@@ -130,13 +142,13 @@
         throw new Error((res && res.error) ? res.error : "Unknown server error");
       }
 
-      // Your Apps Script returns guestLink/hostLink at top-level (not res.data)
-      const guestLink = res.guestLink || (res.data && res.data.guestLink) || "";
-      const hostLink  = res.hostLink  || (res.data && res.data.hostLink)  || "";
-      const emailedTo = res.hostEmail || (res.data && res.data.emailedTo) || hostEmail;
+      // Apps Script may return links either at top-level or in res.data (older versions)
+      const guestLink = normalizeLink((res.data && res.data.guestLink) || res.guestLink);
+      const hostLink  = normalizeLink((res.data && res.data.hostLink)  || res.hostLink);
+      const emailedTo = (res.data && res.data.emailedTo) || res.emailedTo || res.hostEmail || hostEmail;
 
       if (!guestLink || !hostLink) {
-        throw new Error("Server did not return guestLink/hostLink. Check Apps Script createEvent_ return values.");
+        throw new Error("Server did not return guestLink/hostLink. Check Apps Script createEvent_ return object.");
       }
 
       document.getElementById("result").style.display = "";
