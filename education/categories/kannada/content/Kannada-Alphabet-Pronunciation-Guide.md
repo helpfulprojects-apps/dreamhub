@@ -4,7 +4,7 @@ Kannada Alphabet Pronunciation Guide is a helpful worksheet designed for childre
 
 The guide helps children recognize letters, improve pronunciation, and build strong reading skills. It is especially useful for early learners, young children, and anyone who is new to the Kannada language.
 
-This guide supports confident learning by making Kannada alphabet pronunciation simple, clear, and enjoyable.
+This guide supports confident learning by making Kannada alphabet pronunciation simple, clear, and enjoyable..
 
 
 ಅ	a (as in ago)
