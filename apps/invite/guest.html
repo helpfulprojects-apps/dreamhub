@@ -6,11 +6,16 @@
   <title>DreamHub • RSVP</title>
 
   <link rel="stylesheet" href="/dreamhub/assets/css/style.css" />
-  <link rel="stylesheet" href="./invite.css">
 
-  <!-- Load config + shared invite utilities + guest page logic -->
-  <script src="./config.js"></script>
-  <script src="./invite.js"></script>
+  <!-- Shared config must come first -->
+  <script defer src="/dreamhub/assets/js/config.js"></script>
+  <script defer src="/dreamhub/assets/js/layout.js"></script>
+  
+  <!-- App specific -->
+  <link rel="stylesheet" href="./invite.css" />
+  <script defer src="./config.js"></script>
+  <script defer src="./invite.js"></script>
+  
   <script src="./guest.js"></script>
   <script src="/dreamhub/assets/js/layout.js"></script>
 

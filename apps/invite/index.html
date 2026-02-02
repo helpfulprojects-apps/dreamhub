@@ -4,11 +4,16 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <link rel="stylesheet" href="/dreamhub/assets/css/style.css" />
-      
-  <!-- IMPORTANT: config must load BEFORE layout -->
+
+  <!-- Shared config must come first -->
   <script defer src="/dreamhub/assets/js/config.js"></script>
   <script defer src="/dreamhub/assets/js/layout.js"></script>
-  <script defer src="/dreamhub/apps/invite/invite.js"></script>
+  
+  <!-- App specific -->
+  <link rel="stylesheet" href="./invite.css" />
+  <script defer src="./config.js"></script>
+  <script defer src="./invite.js"></script>
+  
 
   <link rel="stylesheet" href="./invite.css">
   <title>DreamHub • Invitation Maker</title>
