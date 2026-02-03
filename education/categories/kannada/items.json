@@ -16,6 +16,22 @@
       "tag": "Lesson",
       "icon": "\u0c95",
       "meta": "Kannada Alphabets"
+    },
+    {
+      "id": "Days-of-the-Week-in-Kannada",
+      "title": "Days-of-the-Week-in-Kannada",
+      "summary": "Days of the Week in Kannada (ವಾರದ ದಿನಗಳು - Vārada Dinagaḷu).",
+      "tag": "Lesson",
+      "icon": "\u0c95",
+      "meta": "Kannada Dinagalu"
+    },
+    {
+      "id": "Colors-in-Kannada",
+      "title": "Colors-in-Kannada",
+      "summary": "Colors (ಬಣ್ಣಗಳು - Baṇṇagaḷu) in Kannada - Educational Learning Resource.",
+      "tag": "Lesson",
+      "icon": "\u0c95",
+      "meta": "Bannagalu"
     }
     
   ]
