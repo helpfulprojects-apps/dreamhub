@@ -1,14 +1,6 @@
 {
   "items": [
-    {
-      "id": "kannada-basics",
-      "title": "Kannada Basics",
-      "summary": "Simple Kannada learning content (sample).",
-      "tag": "Lesson",
-      "icon": "\u0c95",
-      "meta": "Sample"
-    },
-
+  
     {
       "id": "Kannada-Alphabet-Pronunciation-Guide",
       "title": "Kannada-Alphabet-Pronunciation-Guide",
@@ -32,6 +24,30 @@
       "tag": "Lesson",
       "icon": "\u0c95",
       "meta": "Bannagalu"
+    },
+    {
+      "id": "Numbers(ಸಂಖ್ಯೆಗಳು)-in-Kannada",
+      "title": "Numbers(ಸಂಖ್ಯೆಗಳು)-in-Kannada",
+      "summary": "Numbers(ಸಂಖ್ಯೆಗಳು)-in-Kannada.",
+      "tag": "Lesson",
+      "icon": "\u0c95",
+      "meta": "Sankegalu"
+    },
+    {
+      "id": "Kannada-Words-or-phrases-for-greetings",
+      "title": "Kannada-Words-or-phrases-for-greetings",
+      "summary": "Kannada Words or phrases for greetings.",
+      "tag": "Lesson",
+      "icon": "\u0c95",
+      "meta": "Kannada Words"
+    },
+    {
+      "id": "Body-Parts-in-Kannada",
+      "title": "Body Parts in Kannada",
+      "summary": "Body Parts in Kannada.",
+      "tag": "Lesson",
+      "icon": "\u0c95",
+      "meta": "Body Parts"
     }
     
   ]

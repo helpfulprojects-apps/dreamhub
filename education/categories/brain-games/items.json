@@ -4,7 +4,7 @@
       "id": "Spot-the-difference",
       "title": "Spot the Difference",
       "summary": "A simple brain game.",
-      "tag": "Game",
+      "tag": "BrainGame",
       "icon": "\ud83e\udde9",
       "meta": "Brain Games"
     },
@@ -13,7 +13,7 @@
       "id": "Riddles",
       "title": "Riddles",
       "summary": "100 Riddles to Ask Your Kids.",
-      "tag": "Game",
+      "tag": "BrainGame",
       "icon": "\ud83e\udde9",
       "meta": "Riddles"
     },
@@ -21,7 +21,7 @@
       "id": "Find-the-Different-Number",
       "title": "Find-the-Different-Number",
       "summary": "Brain Teaser - Fun Critical Thinking Activity.",
-      "tag": "Game",
+      "tag": "BrainGame",
       "icon": "\ud83e\udde9",
       "meta": "Brain Teaser"
     },
@@ -29,7 +29,7 @@
       "id": "Aptitude-Quest",
       "title": "Aptitude-Quest",
       "summary": "Fun and Challenging Brain Boosters for Kids.",
-      "tag": "Game",
+      "tag": "BrainGame",
       "icon": "\ud83e\udde9",
       "meta": "Brain Booster"
     }
