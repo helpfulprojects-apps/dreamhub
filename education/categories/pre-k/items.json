@@ -23,6 +23,70 @@
       "tag": "Worksheet",
       "icon": "\u2728",
       "meta": "Sample \u2022 Replace PDF"
+    },
+    {
+      "id": "Shapes-Worksheets",
+      "title": "Shapes-Worksheets",
+      "summary": "Shapes Activity.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Sample \u2022 Replace PDF"
+    },
+    {
+      "id": "Parts-of-the-Face",
+      "title": "Parts of the Face",
+      "summary": "Parts of the Face.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Sample \u2022 Replace PDF"
+    },
+    {
+      "id": "Letter-Tracing",
+      "title": "Letter Tracing",
+      "summary": "Letter Tracing Worksheets.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Sample \u2022 Replace PDF"
+    },
+    {
+      "id": "Fruits-from-A-to-Z",
+      "title": "Fruits from A to Z",
+      "summary": "Fruits from A to Z.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Sample \u2022 Replace PDF"
+    },
+    {
+      "id": "Counting-Worksheets",
+      "title": "Counting Worksheets",
+      "summary": "Counting worksheets for Pre-k.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Sample \u2022 Replace PDF"
+    },
+    {
+      "id": "Beginning-Sounds",
+      "title": "Beginning Sounds Worksheets",
+      "summary": "Beginning Sounds worksheets for Pre-k.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Sample \u2022 Replace PDF"
+    },
+    {
+      "id": "Alphabets-Worksheets",
+      "title": "Alphabets Worksheets",
+      "summary": "Alphabets worksheets for Pre-k.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Sample \u2022 Replace PDF"
+    },
+    {
+      "id": "Alphabets-A-to-Z",
+      "title": "Alphabets A to Z",
+      "summary": "Alphabets worksheets for Pre-k.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Sample \u2022 Replace PDF"
     }
   ]
 }
