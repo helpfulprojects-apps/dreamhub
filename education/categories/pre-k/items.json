@@ -1,7 +1,7 @@
 {
   "items": [
     {
-      "id": "pattern-worksheets",
+      "id": "Pattern-Worksheets",
       "title": "Pattern Worksheets",
       "summary": "Fun and interactive pattern practice.",
       "tag": "Worksheet",
@@ -94,7 +94,47 @@
       "summary": "Far or Near for Pre-K and Kindergarten.",
       "tag": "Worksheet",
       "icon": "\u2728",
-      "meta": "Sample \u2022 Replace PDF"
+      "meta": "Pre-K"
+    },
+    {
+      "id": "Fill-in-the-Missing-Letter-Worksheets",
+      "title": "Fill-in-the-Missing-Letter-Worksheets",
+      "summary": "Fill in the Missing Letter Worksheets for Pre-K & Kindergarten.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Pre-K"
+    },
+    {
+      "id": "Line-Tracing-Worksheets",
+      "title": "Line-Tracing-Worksheets",
+      "summary": "Line Tracing Worksheets: Pre-Writing Practice.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Pre-K"
+    },
+    {
+      "id": "Number-Tracing",
+      "title": "Number-Tracing-Worksheets",
+      "summary": "Number Tracing Worksheets- Early Math and Writing Practice for Kids.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Pre-K"
+    },
+    {
+      "id": "Match-the-Letters",
+      "title": "Match the Letters Worksheets",
+      "summary": "Match the Letters Worksheets - Fun Alphabet Learning for Kids.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Pre-K"
+    },
+    {
+      "id": "Numbers-1-to-20-Practice ",
+      "title": "Numbers 1 to 20 Practice  Worksheets",
+      "summary": "Numbers 1-20 Practice Worksheets.",
+      "tag": "Worksheet",
+      "icon": "\u2728",
+      "meta": "Pre-K"
     }
   ]
 }
