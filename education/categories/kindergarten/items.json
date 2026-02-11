@@ -103,6 +103,14 @@
       "tag": "Worksheet",
       "icon": "\ud83d\udd24",
       "meta": "Kindergarten"
+    },
+    {
+      "id": "Farm-Animals",
+      "title": "Farm Animals",
+      "summary": "Farm-Animals Worksheets for Kindergarten.",
+      "tag": "Worksheet",
+      "icon": "\ud83d\udd24",
+      "meta": "Kindergarten"
     }
   ]
 }
