@@ -1,12 +1,44 @@
 {
   "items": [
     {
-      "id": "math-word-problems",
-      "title": "Math Word Problems",
-      "summary": "Beginner word problems (sample).",
+      "id": "Addition-Word-Problems",
+      "title": "Addition-Word-Problems",
+      "summary": "Addition Word Problems for Grade 2.",
       "tag": "Worksheet",
       "icon": "\u2795",
-      "meta": "Sample"
+      "meta": "Grade 2"
+    },
+    {
+      "id": "Adjectives-for-Grade-2",
+      "title": "Adjectives-for-Grade-2",
+      "summary": "Adjectives for Grade-2 with Worksheets.",
+      "tag": "Worksheet",
+      "icon": "\u2795",
+      "meta": "Grade 2"
+    },
+    {
+      "id": "Aquatic-Animals-with-Worksheets",
+      "title": "Aquatic-Animals-with-Worksheets",
+      "summary": "Aquatic Animals for Grade 2 with Worksheets.",
+      "tag": "Worksheet",
+      "icon": "\u2795",
+      "meta": "Grade 2"
+    },
+    {
+      "id": "Earths-Landforms",
+      "title": "Earths-Landforms",
+      "summary": "Earths Landforms for Grade 2.",
+      "tag": "Worksheet",
+      "icon": "\u2795",
+      "meta": "Grade 2"
+    },
+    {
+      "id": "Frog-LifeCycle",
+      "title": "Frog-LifeCycle",
+      "summary": "Frog LifeCycle for Grade 2 with Worksheets.",
+      "tag": "Worksheet",
+      "icon": "\u2795",
+      "meta": "Grade 2"
     }
   ]
 }
