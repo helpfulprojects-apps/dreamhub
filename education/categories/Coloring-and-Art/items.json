@@ -1,21 +1,6 @@
 {
   "items": [
-    {
-      "id": "Christmas-Coloring",
-      "title": "Christmas Coloring Pages",
-      "summary": "Get into the holiday spirit with this delightful collection of Christmas Coloring Pages!.",
-      "tag": "Coloring",
-      "icon": "\ud83d\udcd6",
-      "meta": ""
-    },
-    {
-      "id": "Valentines-Day-Coloring",
-      "title": "Valentine's Day Coloring Pages",
-      "summary": "Valentine's Day Coloring Pages.",
-      "tag": "Coloring",
-      "icon": "\ud83d\udcd6",
-      "meta": ""
-    },
+
     {
       "id": "A-to-Z-Coloring-Tracing",
       "title": "A-to-Z-Coloring-Tracing book",
@@ -33,6 +18,14 @@
       "meta": ""
     },
     {
+      "id": "Christmas-Coloring",
+      "title": "Christmas Coloring Pages",
+      "summary": "Get into the holiday spirit with this delightful collection of Christmas Coloring Pages!.",
+      "tag": "Coloring",
+      "icon": "\ud83d\udcd6",
+      "meta": ""
+    },
+    {
       "id": "Fruits-Coloring-Book",
       "title": "Fruits Coloring Book",
       "summary": "Fruits Coloring book.",
@@ -41,16 +34,16 @@
       "meta": ""
     },
     {
-      "id": "How-to-Draw–Fruits",
-      "title": "How-to-Draw–Fruits",
+      "id": "How-to-Draw-Fruits",
+      "title": "How-to-Draw-Fruits",
       "summary": "How to Draw Fruits - Step by Step Guide.",
       "tag": "Drawing",
       "icon": "\ud83d\udcd6",
       "meta": ""
     },
     {
-      "id": "How-to-Draw–Vegetables",
-      "title": "How-to-Draw–Vegetables",
+      "id": "How-to-Draw-Vegetables",
+      "title": "How-to-Draw-Vegetables",
       "summary": "How to Draw Vegetables - Step by Step Guide.",
       "tag": "Drawing",
       "icon": "\ud83d\udcd6",
@@ -61,6 +54,14 @@
       "title": "Trace-the-Fruits-and-Fruit-Names",
       "summary": "Trace-the-Fruits-and-Fruit-Names.",
       "tag": "Tracing",
+      "icon": "\ud83d\udcd6",
+      "meta": ""
+    },
+    {
+      "id": "Valentines-Day-Coloring",
+      "title": "Valentine's Day Coloring Pages",
+      "summary": "Valentine's Day Coloring Pages.",
+      "tag": "Coloring",
       "icon": "\ud83d\udcd6",
       "meta": ""
     },
