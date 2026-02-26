@@ -1,12 +1,101 @@
 {
   "items": [
     {
-      "id": "multiplication-practice",
-      "title": "Multiplication Practice",
-      "summary": "Times tables practice (sample).",
-      "tag": "Worksheet",
+      "id": "Adjectives",
+      "title": "Adjective Guide for Kids",
+      "summary": "Adjective Guide for Kids.",
+      "tag": "Guide",
       "icon": "\u2716\ufe0f",
-      "meta": "Sample"
+      "meta": ""
+    },
+    {
+      "id": "Albert-Einstein",
+      "title": "Albert-Einstein",
+      "summary": "Albert Einstein for Kids.",
+      "tag": "Guide",
+      "icon": "\u2716\ufe0f",
+      "meta": ""
+    },
+    {
+      "id": "Natural-Resources",
+      "title": "Natural-Resources",
+      "summary": "Natural-Resources for Kids.",
+      "tag": "Guide",
+      "icon": "\u2716\ufe0f",
+      "meta": ""
+    },
+    {
+      "id": "Our-Solar-System",
+      "title": "Our-Solar-System",
+      "summary": "Our Solar System for Kids.",
+      "tag": "Guide",
+      "icon": "\u2716\ufe0f",
+      "meta": ""
+    },
+    {
+      "id": "Points-Lines-Rays-and-Line Segments",
+      "title": "Points-Lines-Rays-and-Line Segments",
+      "summary": "Introduction to Points Lines Rays and Line Segments.",
+      "tag": "Guide",
+      "icon": "\u2716\ufe0f",
+      "meta": ""
+    },
+    {
+      "id": "Reading-Comprehension-The-Secret-Garden-Visitor",
+      "title": "Reading-Comprehension-The-Secret-Garden-Visitor",
+      "summary": "Reading-Comprehension-The-Secret-Garden-Visitor.",
+      "tag": "Reading Comprehension",
+      "icon": "\u2716\ufe0f",
+      "meta": ""
+    },
+    {
+      "id": "Rectangle-Area-and-Perimeter",
+      "title": "Rectangle-Area-and-Perimeter",
+      "summary": "Rectangle Area and Perimeter with worksheets.",
+      "tag": "Math",
+      "icon": "\u2716\ufe0f",
+      "meta": ""
+    },
+    {
+      "id": "Roman-Numbers",
+      "title": "Roman-Numbers",
+      "summary": "How to Teach Roman Numbers to kids.",
+      "tag": "Guide",
+      "icon": "\u2716\ufe0f",
+      "meta": ""
+    },
+    {
+      "id": "Solar-Eclipse-with-Worksheets",
+      "title": "Solar-Eclipse-with-Worksheets",
+      "summary": "Solar Eclipse with Worksheets with worksheets.",
+      "tag": "Science",
+      "icon": "\u2716\ufe0f",
+      "meta": ""
+    },
+    {
+      "id": "Square-Area-and-Perimeter",
+      "title": "Square-Area-and-Perimeter",
+      "summary": "Square Area and Perimeter with worksheets.",
+      "tag": "Math",
+      "icon": "\u2716\ufe0f",
+      "meta": ""
+    },
+    {
+      "id": "Time-Worksheets",
+      "title": "Time-Worksheets",
+      "summary": "Telling the Time Worksheets.",
+      "tag": "Math",
+      "icon": "\u2716\ufe0f",
+      "meta": ""
+    },
+    {
+      "id": "Vertebrates-and-Invertebrates",
+      "title": "Vertebrates-and-Invertebrates",
+      "summary": "Vertebrates and Invertebrates with Worksheets.",
+      "tag": "Science",
+      "icon": "\u2716\ufe0f",
+      "meta": ""
     }
+    
   ]
 }

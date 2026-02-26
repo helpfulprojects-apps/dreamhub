@@ -4,105 +4,113 @@
       "id": "Addition-Worksheets",
       "title": "Addition-Worksheets",
       "summary": "Addition-Worksheets for Grade 1.",
-      "tag": "Worksheet",
+      "tag": "Math",
       "icon": "\ud83d\udcd6",
-      "meta": "Grade 1"
+      "meta": ""
     },
     {
       "id": "Animals-from-A-to-Z",
       "title": "Animals-from-A-to-Z",
       "summary": "Animals from A to Z Worksheets for Grade 1.",
-      "tag": "Worksheet",
+      "tag": "Science",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
     },
     {
       "id": "Basics-about-plants",
       "title": "Basics-about-plants",
       "summary": "Basics-about-plants for Grade 1.",
-      "tag": "Worksheet",
+      "tag": "Science",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
     },
     {
       "id": "Butterfly-Life-Cycle",
       "title": "Butterfly-Life-Cycle",
       "summary": "Butterfly Life Cycle for Grade 1.",
-      "tag": "Worksheet",
+      "tag": "Science",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
     },
     {
       "id": "Christmas-Reading-Comprehension",
       "title": "Christmas-Reading-Comprehension",
       "summary": "Christmas Reading Comprehension for Grade 1.",
-      "tag": "Worksheet",
+      "tag": "Reading Comprehension",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
     },
     {
       "id": "Farm-Animals",
       "title": "Farm-Animals",
       "summary": "Farm Animals for Grade 1.",
-      "tag": "Worksheet",
+      "tag": "Science",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
     },
     {
       "id": "Insects-Worksheets",
       "title": "Insects-Worksheets",
       "summary": "Insects Worksheets for Grade 1.",
-      "tag": "Worksheet",
+      "tag": "Science",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
     },
     {
       "id": "Plants-Need-with-Worksheets",
       "title": "Plants-Need-with-Worksheets",
       "summary": "Plants Need with Worksheets for Grade 1.",
-      "tag": "Worksheet",
+      "tag": "Science",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
     },
     {
       "id": "Punctuation",
       "title": "Punctuation",
       "summary": "Punctuation with Worksheets for Grade 1.",
-      "tag": "Worksheet",
+      "tag": "Literacy",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
     },
     {
       "id": "Read-the-Story-and-Answer",
       "title": "Read-the-Story-and-Answer",
       "summary": "Read the Story and Answer the Questions for Grade 1.",
-      "tag": "Worksheet",
+      "tag": "Reading Comprehension",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
+    },
+    {
+      "id": "Spelling-Worksheets",
+      "title": "Spelling-Worksheets",
+      "summary": "Spelling-Worksheets for Grade 1.",
+      "tag": "Spelling",
+      "icon": "\ud83d\udd24",
+      "meta": ""
     },
     {
       "id": "Subtraction-Worksheets",
       "title": "Subtraction-Worksheets",
       "summary": "Subtraction Worksheets for Grade 1.",
-      "tag": "Worksheet",
+      "tag": "Math",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
     },
     {
       "id": "Teaching-Addition-to-Kids",
       "title": "Teaching-Addition-to-Kids",
       "summary": "Teaching-Addition-to-Kids.",
-      "tag": "Worksheet",
+      "tag": "Math",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
     },
     {
       "id": "Types-of-Lines",
       "title": "Types-of-Lines",
       "summary": "Types of Lines for Grade 1.",
-      "tag": "Worksheet",
+      "tag": "Math",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
     },
     {
       "id": "Valentines-Day-Worksheets",
@@ -110,7 +118,7 @@
       "summary": "Valentines Day Worksheets for Grade 1.",
       "tag": "Worksheet",
       "icon": "\ud83d\udd24",
-      "meta": "Grade 1"
+      "meta": ""
     }
   ]
 }
