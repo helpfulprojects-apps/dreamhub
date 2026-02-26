@@ -6,7 +6,7 @@
       "summary": "Animals names from A to Z.",
       "tag": "Worksheet",
       "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
+      "meta": ""
     },
     {
       "id": "Beginning-Sounds",
@@ -14,7 +14,7 @@
       "summary": "ABeginning Sounds Worksheets.",
       "tag": "Worksheet",
       "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
+      "meta": ""
     },
     {
       "id": "Color-The-Same-Numbers-Same-Color",
@@ -22,7 +22,15 @@
       "summary": "Color the Same Numbers with the Same Color - Fun Number Recognition Activity.",
       "tag": "Worksheet",
       "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
+      "meta": ""
+    },
+    {
+      "id": "Compound-Words-Worksheets",
+      "title": "Compound-Words-Worksheets",
+      "summary": "Compound-Words-Worksheets.",
+      "tag": "Worksheet",
+      "icon": "\ud83d\udd24",
+      "meta": ""
     },
     {
       "id": "Counting-Worksheets",
@@ -30,7 +38,7 @@
       "summary": "Counting Worksheets - Fun and Interactive Math Practice for Early Learners.",
       "tag": "Worksheet",
       "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
+      "meta": ""
     },
     {
       "id": "Days-of-the-Week",
@@ -38,71 +46,7 @@
       "summary": "Days of the Week Worksheets.",
       "tag": "Worksheet",
       "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
-    },
-    {
-      "id": "Fill-in-the-Missing-Letter-Worksheets",
-      "title": "Fill-in-the-Missing-Letter-Worksheets",
-      "summary": "Fill-in-the-Missing-Letter-Worksheets.",
-      "tag": "Worksheet",
-      "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
-    },
-    {
-      "id": "Fruits-from-A-to-Z",
-      "title": "Fruits-from-A-to-Z",
-      "summary": "Fruits from A to Z Worksheets.",
-      "tag": "Worksheet",
-      "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
-    },
-    {
-      "id": "Fun-Ways-to-Teach-Math",
-      "title": "Fun-Ways-to-Teach-Math",
-      "summary": "Fun Ways to Teach Math to Your Toddler at Home.",
-      "tag": "Worksheet",
-      "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
-    },
-    {
-      "id": "Months-of-the-Year",
-      "title": "Months-of-the-Year",
-      "summary": "Months of the Year Worksheets.",
-      "tag": "Worksheet",
-      "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
-    },
-    {
-      "id": "Numbers-1-to-20-Practice",
-      "title": "Numbers-1-to-20-Practice",
-      "summary": "Numbers 1 - 20 Practice Worksheets.",
-      "tag": "Worksheet",
-      "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
-    },
-    {
-      "id": "Pattern-Worksheets",
-      "title": "Pattern-Worksheets",
-      "summary": "Pattern Worksheets - Fun and Interactive Learning for Kids.",
-      "tag": "Worksheet",
-      "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
-    },
-    {
-      "id": "Read-the-Story-and-Answer",
-      "title": "Read-the-Story-and-Answer",
-      "summary": "Read the Story and Answer the Questions - Reading Comprehension Worksheets.",
-      "tag": "Worksheet",
-      "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
-    },
-    {
-      "id": "Shapes-Worksheets",
-      "title": "Shapes-Worksheets",
-      "summary": "Shapes Worksheets for Kindergarten.",
-      "tag": "Worksheet",
-      "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
+      "meta": ""
     },
     {
       "id": "Farm-Animals",
@@ -110,7 +54,72 @@
       "summary": "Farm-Animals Worksheets for Kindergarten.",
       "tag": "Worksheet",
       "icon": "\ud83d\udd24",
-      "meta": "Kindergarten"
+      "meta": ""
+    },
+    {
+      "id": "Fill-in-the-Missing-Letter-Worksheets",
+      "title": "Fill-in-the-Missing-Letter-Worksheets",
+      "summary": "Fill-in-the-Missing-Letter-Worksheets.",
+      "tag": "Worksheet",
+      "icon": "\ud83d\udd24",
+      "meta": ""
+    },
+    {
+      "id": "Fruits-from-A-to-Z",
+      "title": "Fruits-from-A-to-Z",
+      "summary": "Fruits from A to Z Worksheets.",
+      "tag": "Worksheet",
+      "icon": "\ud83d\udd24",
+      "meta": ""
+    },
+    {
+      "id": "Fun-Ways-to-Teach-Math",
+      "title": "Fun-Ways-to-Teach-Math",
+      "summary": "Fun Ways to Teach Math to Your Toddler at Home.",
+      "tag": "Worksheet",
+      "icon": "\ud83d\udd24",
+      "meta": ""
+    },
+    {
+      "id": "Months-of-the-Year",
+      "title": "Months-of-the-Year",
+      "summary": "Months of the Year Worksheets.",
+      "tag": "Worksheet",
+      "icon": "\ud83d\udd24",
+      "meta": ""
+    },
+    {
+      "id": "Numbers-1-to-20-Practice",
+      "title": "Numbers-1-to-20-Practice",
+      "summary": "Numbers 1 - 20 Practice Worksheets.",
+      "tag": "Worksheet",
+      "icon": "\ud83d\udd24",
+      "meta": ""
+    },
+    {
+      "id": "Pattern-Worksheets",
+      "title": "Pattern-Worksheets",
+      "summary": "Pattern Worksheets - Fun and Interactive Learning for Kids.",
+      "tag": "Worksheet",
+      "icon": "\ud83d\udd24",
+      "meta": ""
+    },
+    {
+      "id": "Read-the-Story-and-Answer",
+      "title": "Read-the-Story-and-Answer",
+      "summary": "Read the Story and Answer the Questions - Reading Comprehension Worksheets.",
+      "tag": "Worksheet",
+      "icon": "\ud83d\udd24",
+      "meta": ""
+    },
+    {
+      "id": "Shapes-Worksheets",
+      "title": "Shapes-Worksheets",
+      "summary": "Shapes Worksheets for Kindergarten.",
+      "tag": "Worksheet",
+      "icon": "\ud83d\udd24",
+      "meta": ""
     }
+
   ]
 }
