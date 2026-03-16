@@ -1,7 +1,7 @@
 # Easter Symmetry Drawing Worksheets – Fun Art Activity for Kids 🐰🎨
 
 ![Easter](images/easter.jpg){sm}
-![Easter](images/easter.jpg){md}
+
 Celebrate the joy of Easter while learning about symmetry with these creative Easter Symmetry Drawing Worksheets! In this fun activity, children complete the missing half of a picture by drawing the other side to make it symmetrical.
 
 ## Skills Developed:
